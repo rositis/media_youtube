@@ -1,0 +1,7 @@
+// $Id$
+
+Changelog for the Media: YouTube module.
+
+January 2009
+------------
+ * Create ResourceYouTubeStreamWrapper.inc (aaron).

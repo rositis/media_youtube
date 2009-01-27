@@ -1,0 +1,9 @@
+; $Id$
+
+name = Media: YouTube
+description = Provides YouTube support to the Media module.
+package = "Media"
+core = 6.x
+dependencies[] = resource
+dependencies[] = media
+
