@@ -3,7 +3,6 @@
 name = Media: YouTube
 description = Provides YouTube support to the Media module.
 package = "Media"
-core = 6.x
-dependencies[] = resource
+core = 7.x
+files[] = media_youtube.module
 dependencies[] = media
-

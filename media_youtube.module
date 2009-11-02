@@ -1,3 +1,19 @@
 <?php
+// $Id$
 
-
+/**
+ *  @file
+ *  Media YouTube provides a stream wrapper and formatters for videos provided
+ *  by YouTube, available at http://youtube.com/.
+ *
+ *  @TODO:
+ *  Create the stream wrapper implementation.
+ *  Hook into Media, allowing editors to enter a URL in a text box.
+ *  Parse YouTube URL's.
+ *  Create a video size transformer hook for media styles.
+ *  Create a thumbnail importer for media styles/ image styles.
+ *  Tie in YouTube API.
+ *  Allow editors to search for videos to display on the browser.
+ *  Allow editors to put in a youtube username to display on the browser.
+ *  Allow editors to log in w/ their credentials.
+ */

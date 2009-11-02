@@ -1,0 +1,12 @@
+// $Id$
+
+Changelog for the Media: YouTube module.
+========================================
+
+by aaron: Upgrade module to DRUPAL-7.
+
+=============
+ DRUPAL-7--1
+=============
+
+by aaron: Create ResourceYouTubeStreamWrapper.inc.
