@@ -19,9 +19,10 @@
  */
 
 /**
- *  Create stream wrapper for YouTube videos.
+ *  Implements hook_stream_wrappers().
  */
 function media_youtube_stream_wrappers() {
+  stream_wrapper_register('youtube', 'MediaYouTubeStreamWrapper');
   return array(
     'youtube' => array(
       'name' => t('YouTube videos'),
