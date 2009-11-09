@@ -10,6 +10,6 @@
  *  Create an instance like this:
  *  $youtube = new ResourceYouTubeStreamWrapper('youtube://?v=[video-code]');
  */
-class ResourceYouTubeStreamWrapper extends ResourceReadOnlyStreamWrapper {
+class MediaYouTubeStreamWrapper extends MediaReadOnlyStreamWrapper {
   private $base_url = 'http://youtube.com/watch';
 }

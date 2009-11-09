@@ -17,3 +17,16 @@
  *  Allow editors to put in a youtube username to display on the browser.
  *  Allow editors to log in w/ their credentials.
  */
+
+/**
+ *  Create stream wrapper for YouTube videos.
+ */
+function media_youtube_stream_wrappers() {
+  return array(
+    'youtube' => array(
+      'name' => t('YouTube videos'),
+      'class' => 'MediaYouTubeStreamWrapper',
+      'description' => t('Videos provided by YouTube.'),
+    ),
+  );
+}

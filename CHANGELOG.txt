@@ -3,6 +3,8 @@
 Changelog for the Media: YouTube module.
 ========================================
 
+by aaron: Include stream wrapper w/ module load.
+by aaron: Rename stream wrapper implementation to MediaYouTubeStreamWrapper.
 by aaron: Upgrade module to DRUPAL-7.
 
 =============

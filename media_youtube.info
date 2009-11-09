@@ -5,4 +5,5 @@ description = Provides YouTube support to the Media module.
 package = "Media"
 core = 7.x
 files[] = media_youtube.module
+files[] = MediaYouTubeStreamWrapper.inc
 dependencies[] = media
