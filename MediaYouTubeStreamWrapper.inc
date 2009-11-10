@@ -11,5 +11,5 @@
  *  $youtube = new ResourceYouTubeStreamWrapper('youtube://?v=[video-code]');
  */
 class MediaYouTubeStreamWrapper extends MediaReadOnlyStreamWrapper {
-  private $base_url = 'http://youtube.com/watch';
+  protected $base_url = 'http://youtube.com/watch';
 }

@@ -3,6 +3,7 @@
 Changelog for the Media: YouTube module.
 ========================================
 
+by aaron: Parse URL correctly.
 by aaron: Register the stream wrapper.
 by aaron: Include stream wrapper w/ module load.
 by aaron: Rename stream wrapper implementation to MediaYouTubeStreamWrapper.
