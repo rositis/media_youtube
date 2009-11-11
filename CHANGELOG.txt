@@ -3,6 +3,7 @@
 Changelog for the Media: YouTube module.
 ========================================
 
+by aaron: Add test default media styles.
 by aaron: Parse URL correctly.
 by aaron: Register the stream wrapper.
 by aaron: Include stream wrapper w/ module load.

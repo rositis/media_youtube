@@ -31,3 +31,36 @@ function media_youtube_stream_wrappers() {
     ),
   );
 }
+
+/**
+ * Implement hook_media_effect_info().
+ */
+function media_youtube_media_effect_info() {
+  return array(
+    'media_youtube_media_effect_info' => array(
+      'label' => t('YouTube styles'),
+      'streams' => array('youtube://'),
+      'mimetypes' => array('application/octet-stream'),
+      'styles' => array(
+        'youtube_preview' => array(
+          'name' => 'youtube_preview',
+          'module' => 'media_youtube',
+          'effects' => array(
+            'autoplay' => FALSE,
+            'width' => 320,
+            'height' => 240,
+          ),
+        ),
+        'youtube_full' => array(
+          'name' => 'youtube_full',
+          'module' => 'media_youtube',
+          'effects' => array(
+            'autoplay' => TRUE,
+            'width' => 620,
+            'height' => 480,
+          ),
+        ),
+      ),
+    ),
+  );
+}
