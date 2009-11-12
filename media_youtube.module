@@ -41,26 +41,74 @@ function media_youtube_media_effect_info() {
       'label' => t('YouTube styles'),
       'streams' => array('youtube://'),
       'mimetypes' => array('application/octet-stream'),
+      'preview-theme' => 'media_youtube_preview_style',
       'styles' => array(
-        'youtube_preview' => array(
-          'name' => 'youtube_preview',
+        'thumbnail' => array(
+          'name' => 'thumbnail',
           'module' => 'media_youtube',
           'effects' => array(
-            'autoplay' => FALSE,
-            'width' => 320,
-            'height' => 240,
+            array('label' => t('Autoplay'), 'name' => 'autoplay', 'data' => array('autoplay' => 1)),
+            array('label' => t('Resize'), 'name' => 'resize', 'data' => array('width' => 320, 'height' => 240)),
           ),
         ),
         'youtube_full' => array(
           'name' => 'youtube_full',
           'module' => 'media_youtube',
           'effects' => array(
-            'autoplay' => TRUE,
-            'width' => 620,
-            'height' => 480,
+            array('label' => t('Autoplay'), 'name' => 'autoplay', 'data' => array('autoplay' => 0)),
+            array('label' => t('Resize'), 'name' => 'resize', 'data' => array('width' => 640, 'height' => 480)),
           ),
         ),
       ),
     ),
   );
 }
+
+function theme_media_youtube_preview_style($variables) {
+  $style = $variables['style'];
+  $sample_video = variable_get('media_youtube_preview_sample_video_uri', 'youtube://v/-jubiv7QUco');
+  $fullscreen_value = 'false';
+  $autoplay = 'false';
+  foreach ($style['effects'] as $effect) {
+    switch ($effect['name']) {
+      case 'autoplay':
+        $autoplay = $effect['data']['autoplay'] ? 'true' : 'false';
+        break;
+      case 'resize':
+        $width = $effect['data']['width'];
+        $height = $effect['data']['height'];
+        break;
+      case 'fullscreen':
+        $fullscreen_value = 'true';
+        break;
+    }
+  }
+  $url = 'http://www.youtube.com/v/-jubiv7QUco';
+  $id = 'media-youtube-preview';
+  $div_id = 'media-youtube-preview-wrapper';
+  $flashvars = check_plain(drupal_http_build_query(array('playerMode' => 'embedded')));
+  // <object width="425" height="344"><param name="movie" value="http://www.youtube.com/v/lZ-s3DRZJKY&hl=en&fs=1&"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/lZ-s3DRZJKY&hl=en&fs=1&" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="425" height="344"></embed></object>
+  $output = <<<OUTPUT
+        <div id="$div_id"><object type="application/x-shockwave-flash" height="$height" width="$width" data="$url" id="$id">
+          <param name="movie" value="$url" />
+          <param name="allowScriptAcess" value="sameDomain"/>
+          <param name="quality" value="best"/>
+          <param name="allowFullScreen" value="$fullscreen_value"/>
+          <param name="bgcolor" value="#FFFFFF"/>
+          <param name="scale" value="noScale"/>
+          <param name="salign" value="TL"/>
+          <param name="FlashVars" value="$flashvars" />
+          <param name="wmode" value="transparent" />
+        </object></div>
+OUTPUT;
+  return $output;
+}
+
+function media_youtube_theme($existing, $type, $theme, $path) {
+  return array(
+    'media_youtube_preview_style' => array(
+      'variables' => array('variables' => NULL),
+    ),
+  );
+}
+
