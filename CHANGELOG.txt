@@ -3,6 +3,7 @@
 Changelog for the Media: YouTube module.
 ========================================
 
+by aaron: Implement hook_styles_presets().
 by aaron: Add variables to preview theme.
 by aaron: Integrate with Styles.
 by aaron: Add preview theme.

@@ -85,6 +85,17 @@ function media_youtube_styles_styles() {
   );
 }
 
+function media_youtube_styles_presets() {
+  return array(
+    'media' => array(
+      'media_youtube' => array(
+        'youtube_preview',
+        'youtube_full',
+      ),
+    ),
+  );
+}
+
 function theme_media_youtube_preview_style($variables) {
   $style_name = $variables['style_name'];
   $styles = styles_containers_available_styles('media', 'media_youtube');
