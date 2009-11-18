@@ -3,6 +3,7 @@
 Changelog for the Media: YouTube module.
 ========================================
 
+by aaron: Define filter callbacks.
 by aaron: Fix return value for hook_styles_presets().
 by aaron: Implement hook_styles_presets().
 by aaron: Add variables to preview theme.
