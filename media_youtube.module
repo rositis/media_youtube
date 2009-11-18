@@ -39,7 +39,22 @@ function media_youtube_theme($existing, $type, $theme, $path) {
     'media_youtube_preview_style' => array(
       'variables' => array('field_type' => NULL, 'container_name' => NULL, 'style_name' => NULL),
     ),
+    'media_youtube_style' => array(
+      'variables' => array('element' => NULL, 'style' => NULL),
+    ),
+    'media_youtube_embed' => array(
+      'variables' => array('style_name' => NULL, 'url' => NULL),
+    ),
   );
+}
+
+function theme_media_youtube_style($variables) {
+  $element = $variables['element'];
+  $style = $variables['style'];
+  $variables['file'] = $element['#item'];
+  $variables['uri'] = $variables['file']['uri'];
+  $variables['style_name'] = $style['name'];
+  return theme('media_youtube_embed', $variables);
 }
 
 function media_youtube_styles_containers() {
@@ -100,7 +115,7 @@ function media_youtube_styles_presets() {
           'youtube_preview',
         ),
       ),
-      'youtube_full' => array(
+      'large' => array(
         'media_youtube' => array(
           'youtube_full',
         ),
@@ -111,10 +126,20 @@ function media_youtube_styles_presets() {
 }
 
 function theme_media_youtube_preview_style($variables) {
+  $variables['uri'] = variable_get('media_youtube_preview_uri', 'youtube://v/-jubiv7QUco');
+  return theme('media_youtube_embed', $variables);
+}
+
+function theme_media_youtube_embed($variables) {
   $style_name = $variables['style_name'];
-  $styles = styles_containers_available_styles('media', 'media_youtube');
-  if (isset($styles[$style_name])) {
-    $style = $styles[$style_name];
+  $style = styles_containers_available_styles('file', 'media_youtube', $style_name);
+  if (!empty($style)) {
+    // Build the URL for display.
+    $uri = $variables['uri'];
+    $wrapper = file_stream_wrapper_get_instance_by_uri($uri);
+    $parts = $wrapper->get_parameters();
+    $url = 'http://youtube.com/v/'. check_plain($parts['v']);
+
     $sample_video = variable_get('media_youtube_preview_sample_video_uri', 'youtube://v/-jubiv7QUco');
     $fullscreen_value = 'false';
     $autoplay = 'false';
@@ -132,7 +157,6 @@ function theme_media_youtube_preview_style($variables) {
           break;
       }
     }
-    $url = 'http://www.youtube.com/v/-jubiv7QUco';
     $id = 'media-youtube-preview';
     $div_id = 'media-youtube-preview-wrapper';
     $flashvars = check_plain(drupal_http_build_query(array('playerMode' => 'embedded')));
