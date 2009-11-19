@@ -18,6 +18,163 @@
  */
 
 /**
+ * Implementation of hook_media_register
+ * @TODO please see notes in the hook for revising this
+ *
+ * @return array
+ *   Form array items
+*/
+function media_youtube_media_register() {
+  $items = array();
+
+  // Register User files display
+  $items['media_youtube_user_files'] = array(
+    'tab' => 'YouTube',
+    'subtab' => 'YouTube Videos I have attached',
+    // Do we need a name for this?
+    'name' => 'YouTube user files',
+    // Is a type necessary, or can we just exploit this
+    // in the callbacks section?
+    'kind' => 'resource',
+    // Shouldn't this be a mimetype?
+    'types'       => '*',
+    'description'  => 'Displays all of current user\'s YouTube streams.',
+    'callbacks'   => array(
+      'resource'    => 'media_youtube_user_files_select',
+    ),
+    // Won't this be define d in the widget
+    // rather than here?
+    'fields'      => array('file'),
+  );
+
+  // Register all uploaded files
+  $items['media_youtube_all_uploaded_files'] = array(
+    'tab' => 'YouTube',
+    'subtab' => 'All YouTube videos',
+    // Do we need a name for this?
+    'name' => 'YouTube videos',
+    // Is a type necessary, or can we just exploit this
+    // in the callbacks section?
+    'kind' => 'resource',
+    // Shouldn't this be a mimetype?
+    'types'       => '*',
+    'description'  => 'Displays all current YouTube files.',
+    'callbacks'   => array(
+      'resource'    => 'media_youtube_uploaded_files_select',
+    ),
+    // Won't this be define d in the widget
+    // rather than here?
+    'fields'      => array('file'),
+  );
+
+    // Register all uploaded files
+  $items['media_youtube_new_file'] = array(
+    'tab' => 'YouTube',
+    'subtab' => 'Paste new YouTube URL or embed code',
+    // Do we need a name for this?
+    'name' => 'YouTube URL',
+    // Is a type necessary, or can we just exploit this
+    // in the callbacks section?
+    'kind' => 'resource',
+    // Shouldn't this be a mimetype?
+    'types'       => '*',
+    'description'  => 'Paste new YouTube file.',
+    'callbacks'   => array(
+      'resource'    => 'media_youtube_files_embed',
+    ),
+    // Won't this be define d in the widget
+    // rather than here?
+    'fields'      => array('file'),
+  );
+
+  // Register User files display
+//   $items['media_file_directory_files'] = array(
+//     'tab' => 'Filesystem',
+//     'subtab' => 'Files in a directory',
+//     'name' => 'Files in a directory',
+//     'kind'        => 'resource',
+//     'types'       => '*',
+//     'description'  => 'All files in a directory',
+//     'callbacks'   => array(
+//       'resource'    => 'media_file_filesystem_select',
+//     ),
+//     'fields'      => array('file'),
+//   );
+
+
+  // Register Add/File file functionality
+//   $items['media_youtube_resource_add_file'] = array(
+//     'tab' => 'Upload a file',
+//     'subtab' => 'Upload a file',
+//     'name'        => 'Media File add file',
+//     'description' => t("Add new file using Drupal's File module"),
+//     'kind'        => 'resource',
+//     'callbacks'   => array(
+//       'resource'    => 'media_file_resource_add_file',
+//     ),
+//     'fields'      => array('file'),
+//   );
+
+  // Register Embed file functionality
+  $items['media_youtube_resource_embed_file'] = array(
+    'name'        => 'Media YouTube embed file',
+    'description' => t("Embed YouTube URI using Drupal's File module"),
+    'uri'         => 'file',
+    'kind'        => 'resource',
+    'types'       => '*',
+    'callbacks'   => array(
+      'resource'    => 'media_youtube_resource_embed_file',
+     ),
+    'fields'      => array('file'),
+  );
+
+  // Register form formatter functionality
+  $items['media_youtube_formatter_form'] = array(
+    'name'        => 'Media YouTube form formatter',
+    'description' => "Media YouTube form formatter",
+    'kind'        => 'formatter',
+    'callbacks'   => array(
+      'formatter'        => 'media_youtube_formatter_form',
+    ),
+    'fields'      => array('file'),
+    );
+
+  // Register action functionality
+  // @TODO: This may not be needed depending on our implementation of hook_media_action [see #480166]
+  $items['media_file_action'] = array(
+    'name'        => 'Media File action handler',
+    'description' => t("Called to perform various actions such as attaching a file to a node"),
+    'kind'        => 'action',
+    'types'       => '*',
+    'callbacks'   => array(
+      'action'      => 'media_file_action',
+     ),
+    'fields'      => array('file'),
+  );
+
+  return $items;
+}
+
+function media_youtube_files_embed($parameters) {
+  $form = drupal_get_form('media_youtube_files_embed_form');
+  return drupal_render($form);
+}
+
+function media_youtube_files_embed_form() {
+  $form = array();
+  $form['youtube'] = array(
+    '#type' => 'textfield',
+    '#title' => t('YouTube URL or Embed Code'),
+    '#description' => t('Please copy and paste the desired YouTube URL or embed code here and press submit.'),
+  );
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Submit'),
+  );
+  return $form;
+}
+
+/**
  *  Create stream wrapper for YouTube videos.
  */
 function media_youtube_stream_wrappers() {
