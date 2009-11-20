@@ -174,6 +174,10 @@ function media_youtube_files_embed_form() {
   return $form;
 }
 
+function media_youtube_files_embed_form_submit(&$form, $form_state) {
+//   dpm('my submit');
+}
+
 /**
  *  Create stream wrapper for YouTube videos.
  */
@@ -196,16 +200,19 @@ function media_youtube_theme($existing, $type, $theme, $path) {
     'media_youtube_preview_style' => array(
       'variables' => array('field_type' => NULL, 'container_name' => NULL, 'style_name' => NULL),
     ),
-    'media_youtube_style' => array(
+    'media_youtube_field_formatter_styles' => array(
       'variables' => array('element' => NULL, 'style' => NULL),
     ),
     'media_youtube_embed' => array(
-      'variables' => array('style_name' => NULL, 'url' => NULL),
+      'variables' => array('style_name' => NULL, 'uri' => NULL),
+    ),
+    'media_youtube_styles' => array(
+      'variables' => array('element' => NULL, 'style' => NULL),
     ),
   );
 }
 
-function theme_media_youtube_style($variables) {
+function theme_media_youtube_field_formatter_styles($variables) {
   $element = $variables['element'];
   $style = $variables['style'];
   $variables['file'] = $element['#item'];
@@ -227,29 +234,42 @@ function media_youtube_styles_containers() {
             'application/octet-stream',
           ),
         ),
-        'preview theme' => 'media_youtube_preview_style',
+        'preview theme' => 'media_youtube_preview_style', // @TODO remove this when doing UI.
         'filter callback' => 'media_youtube_formatter_filter',
-        'theme' => 'media_youtube_style',
+        'themes' => array(
+          'field_formatter_styles' => 'media_youtube_field_formatter_styles',
+          'styles' => 'media_youtube_styles',
+          'preview' => 'media_youtube_preview_style',
+        ),
         'help' => t('YouTube Styles will display embedded YouTube videos and thumbnails to your choosing, such as by resizing, setting colors, and autoplay. You can !manage.', array('!manage' => l(t('manage your YouTube styles here'), 'admin/config/media/media-youtube-styles'))),
       ),
     ),
   );
 }
 
-function media_youtube_formatter_filter($element) {
-  $item = $element['#item'];
-  return (file_uri_scheme($item['uri']) == 'youtube') && ($item['filemime'] == 'application/octet-stream');
+function media_youtube_formatter_filter($variables) {
+  if (isset($variables['object'])) {
+    $object = $variables['object'];
+    return (file_uri_scheme($object->uri) == 'youtube') && ($object->filemime == 'application/octet-stream');
+  }
 }
 
 function media_youtube_styles_styles() {
   return array(
     'file' => array(
       'media_youtube' => array(
+        'youtube_thumbnail' => array(
+          'name' => 'youtube_thumbnail',
+          'effects' => array(
+            array('label' => t('Thumbnail'), 'name' => 'thumbnail', 'data' => array('thumbnail' => 1)),
+            array('label' => t('Resize'), 'name' => 'resize', 'data' => array('width' => 100, 'height' => 75)),
+          ),
+        ),
         'youtube_preview' => array(
           'name' => 'youtube_preview',
           'effects' => array(
             array('label' => t('Autoplay'), 'name' => 'autoplay', 'data' => array('autoplay' => 1)),
-            array('label' => t('Resize'), 'name' => 'resize', 'data' => array('width' => 320, 'height' => 240)),
+            array('label' => t('Resize'), 'name' => 'resize', 'data' => array('width' => 220, 'height' => 165)),
           ),
         ),
         'youtube_full' => array(
@@ -267,6 +287,11 @@ function media_youtube_styles_styles() {
 function media_youtube_styles_presets() {
   $presets = array(
     'file' => array(
+      'thumbnail' => array(
+        'media_youtube' => array(
+          'youtube_thumbnail',
+        ),
+      ),
       'medium' => array(
         'media_youtube' => array(
           'youtube_preview',
@@ -287,6 +312,14 @@ function theme_media_youtube_preview_style($variables) {
   return theme('media_youtube_embed', $variables);
 }
 
+function theme_media_youtube_styles($variables) {
+  $style = $variables['style'];
+  $variables['file'] = $variables['object'];
+  $variables['uri'] = $variables['object']->uri;
+  $variables['style_name'] = $style['name'];
+  return theme('media_youtube_embed', $variables);
+}
+
 function theme_media_youtube_embed($variables) {
   $style_name = $variables['style_name'];
   $style = styles_containers_available_styles('file', 'media_youtube', $style_name);
@@ -298,8 +331,8 @@ function theme_media_youtube_embed($variables) {
     $url = 'http://youtube.com/v/'. check_plain($parts['v']);
 
     $sample_video = variable_get('media_youtube_preview_sample_video_uri', 'youtube://v/-jubiv7QUco');
-    $fullscreen_value = 'false';
-    $autoplay = 'false';
+    $fullscreen_value = $autoplay = 'false';
+    $thumbnail = FALSE;
     foreach ($style['effects'] as $effect) {
       switch ($effect['name']) {
         case 'autoplay':
@@ -310,9 +343,20 @@ function theme_media_youtube_embed($variables) {
           $height = $effect['data']['height'];
           break;
         case 'fullscreen':
-          $fullscreen_value = 'true';
+          $fullscreen_value = $effect['data']['fullscreen'] ? 'true' : 'false';
           break;
+        case 'thumbnail':
+          $thumbnail = $effect['data']['thumbnail'];
       }
+    }
+    if ($thumbnail) {
+      return theme('image', array(
+        'path' => 'http://img.youtube.com/vi/'. check_plain($parts['v']) .'/0.jpg',
+        'alt' => $variables['alt'],
+        'title' => $variables['title'],
+        'attributes' => array('width' => $width, 'height' => $height),
+        'getsize' => FALSE,
+      ));
     }
     $id = 'media-youtube-preview';
     $div_id = 'media-youtube-preview-wrapper';

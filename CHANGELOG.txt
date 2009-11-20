@@ -3,6 +3,7 @@
 Changelog for the Media: YouTube module.
 ========================================
 
+by aaron: New themes for styles.
 by aaron: Begin browser forms for YouTube.
 by aaron: Embed themes & style callbacks.
 by aaron: Define filter callbacks.
