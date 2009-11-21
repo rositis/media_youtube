@@ -155,6 +155,119 @@ function media_youtube_media_register() {
   return $items;
 }
 
+/**
+ * Fetches all files associated with the current user
+ * Provides standard file navigation system.
+ *
+ * @param $options
+ *   array options which define current navigation states
+ * @param $invoke
+ *   boolean is the first invocation- add specific data that
+ *   is required for additional ajax callbacks
+ */
+function media_youtube_user_files_select($parameters) {
+  global $user;
+  // Use a default value for limit
+  if (!isset($parameters['limit']) ) {
+    $parameters['limit'] = 10;
+  }
+
+  if (isset($parameters['object-type']) && isset($parameters['field-name']) && isset($parameters['bundle'])) {
+    $instance = field_info_instance($parameters['object-type'], $parameters['field-name'], $parameters['bundle']);
+    $field = field_info_field($parameters['field-name']);
+  }
+
+  if (empty($instance) || empty($field)) {
+    // Invalid parameters.
+    // @TODO another arthur hack to make things "work"
+    // return;
+  }
+  $allowed_schemes = $instance['widget']['settings']['allowed_schemes'];
+  $directory = $instance['settings']['file_directory'];
+  $extensions = $instance['settings']['file_extensions'];
+  $scheme = $field['settings']['uri_scheme'];
+
+  // Get all files in the system
+  $query =  db_select('file', 'f')->extend('PagerDefault');
+  $query->fields('f', array('fid'));
+  $query->condition('f.uid', $user->uid, '=');
+
+  // Grab only files that are in the YouTube stream.
+  $query->condition('f.uri', 'youtube://%%', 'LIKE');
+  /*
+      @TODO sorry peter, this was bombing things for me
+            I need to figure out why my data coming back to
+            you is not valid....
+
+      $or = db_or();
+      foreach ($allowed_schemes as $scheme) {
+        $or->condition('f.uri', $scheme . '://%', 'LIKE');
+      }
+      $query->condition($or);*/
+  // TODO: filter by mimetype.
+  $fids = $query->limit($parameters['limit'])->execute()->fetchCol();
+  // Now load all the files as objects
+  $files = file_load_multiple($fids);
+  return theme('media_browser_content_frame', array('files' => $files, 'parameters' => $parameters, 'invoke' => $invoke));
+}
+
+
+/**
+ * Fetches all uploaded files
+ * Provides standard file navigation system.
+ *
+ * @param $options
+ *   array options which define current navigation states
+ * @param $invoke
+ *   boolean is the first invocation- add specific data that
+ *   is required for additional ajax callbacks
+ */
+function media_youtube_uploaded_files_select($parameters) {
+  // Use a default value for limit
+  if (!isset($parameters['limit']) ) {
+    $parameters['limit'] = 10;
+  }
+
+  if (isset($parameters['object-type']) && isset($parameters['field-name']) && isset($parameters['bundle'])) {
+    $instance = field_info_instance($parameters['object-type'], $parameters['field-name'], $parameters['bundle']);
+    $field = field_info_field($parameters['field-name']);
+  }
+
+  if (empty($instance) || empty($field)) {
+    // Invalid parameters.
+    // @TODO another arthur hack to make things "work"
+    // return;
+  }
+  $allowed_schemes = $instance['widget']['settings']['allowed_schemes'];
+  $directory = $instance['settings']['file_directory'];
+  $extensions = $instance['settings']['file_extensions'];
+  $scheme = $field['settings']['uri_scheme'];
+
+  // Get all files in the system
+  // TODO: allow this to use a View.
+  $query =  db_select('file', 'f')->extend('PagerDefault');
+  $query->fields('f', array('fid'));
+
+  // Grab only files that are in the YouTube stream.
+  $query->condition('f.uri', 'youtube://%%', 'LIKE');
+
+  /*
+      @TODO sorry peter, this was bombing things for me
+            I need to figure out why my data coming back to
+            you is not valid....
+
+      $or = db_or();
+      foreach ($allowed_schemes as $scheme) {
+        $or->condition('f.uri', $scheme . '://%', 'LIKE');
+      }
+      $query->condition($or);*/
+  // TODO: filter by mimetype.
+  $fids = $query->limit($parameters['limit'])->execute()->fetchCol();
+  // Now load all the files as objects
+  $files = file_load_multiple($fids);
+  return theme('media_browser_content_frame', array('files' => $files, 'parameters' => $parameters, 'invoke' => $invoke));
+}
+
 function media_youtube_files_embed($parameters) {
   $form = drupal_get_form('media_youtube_files_embed_form');
   return drupal_render($form);
