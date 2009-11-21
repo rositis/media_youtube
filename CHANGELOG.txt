@@ -3,6 +3,7 @@
 Changelog for the Media: YouTube module.
 ========================================
 
+by aaron: Add JS behavior to url text field.
 by aaron: Browse user + all youtube videos.
 by aaron: New themes for styles.
 by aaron: Begin browser forms for YouTube.

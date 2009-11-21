@@ -155,6 +155,30 @@ function media_youtube_media_register() {
   return $items;
 }
 
+function media_youtube_files_embed($parameters) {
+  $form = drupal_get_form('media_youtube_files_embed_form');
+  return drupal_render($form);
+}
+
+function media_youtube_files_embed_form() {
+  // Load the custom JS
+//   drupal_add_js(drupal_get_path('module', 'media_youtube') . '/js/media_youtube.js');
+  $form = array();
+  $form['#attached']['js'] = array(
+    drupal_get_path('module', 'media_youtube') . '/js/media_youtube.js'
+  );
+  $form['media-youtube-url'] = array(
+    '#type' => 'textfield',
+    '#title' => t('YouTube URL or Embed Code'),
+    '#description' => t('Please copy and paste the desired YouTube URL or embed code here and press submit.'),
+  );
+  return $form;
+}
+
+function media_youtube_files_embed_form_submit(&$form, $form_state) {
+//   dpm('my submit');
+}
+
 /**
  * Fetches all files associated with the current user
  * Provides standard file navigation system.
@@ -268,29 +292,6 @@ function media_youtube_uploaded_files_select($parameters) {
   return theme('media_browser_content_frame', array('files' => $files, 'parameters' => $parameters, 'invoke' => $invoke));
 }
 
-function media_youtube_files_embed($parameters) {
-  $form = drupal_get_form('media_youtube_files_embed_form');
-  return drupal_render($form);
-}
-
-function media_youtube_files_embed_form() {
-  $form = array();
-  $form['youtube'] = array(
-    '#type' => 'textfield',
-    '#title' => t('YouTube URL or Embed Code'),
-    '#description' => t('Please copy and paste the desired YouTube URL or embed code here and press submit.'),
-  );
-  $form['submit'] = array(
-    '#type' => 'submit',
-    '#value' => t('Submit'),
-  );
-  return $form;
-}
-
-function media_youtube_files_embed_form_submit(&$form, $form_state) {
-//   dpm('my submit');
-}
-
 /**
  *  Create stream wrapper for YouTube videos.
  */
@@ -305,6 +306,9 @@ function media_youtube_stream_wrappers() {
   );
 }
 
+/**
+ *  Implements hook_theme().
+ */
 function media_youtube_theme($existing, $type, $theme, $path) {
   return array(
     'media_youtube_preview_style_old' => array(
@@ -334,6 +338,9 @@ function theme_media_youtube_field_formatter_styles($variables) {
   return theme('media_youtube_embed', $variables);
 }
 
+/**
+ *  Implements hook_styles_containers().
+ */
 function media_youtube_styles_containers() {
   return array(
     'file' => array(
@@ -367,6 +374,9 @@ function media_youtube_formatter_filter($variables) {
   }
 }
 
+/**
+ *  Implements hook_styles_styles().
+ */
 function media_youtube_styles_styles() {
   return array(
     'file' => array(
@@ -397,6 +407,9 @@ function media_youtube_styles_styles() {
   );
 }
 
+/**
+ *  Implements hook_styles_presets().
+ */
 function media_youtube_styles_presets() {
   $presets = array(
     'file' => array(
