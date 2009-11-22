@@ -354,6 +354,7 @@ function media_youtube_styles_containers() {
             'application/octet-stream',
           ),
         ),
+        'weight' => 0,
         'preview theme' => 'media_youtube_preview_style', // @TODO remove this when doing UI.
         'filter callback' => 'media_youtube_formatter_filter',
         'themes' => array(
