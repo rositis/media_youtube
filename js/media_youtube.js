@@ -49,6 +49,10 @@ Drupal.mediaYoutubeBind.prototype.parseurl = function (input) {
   if (input.value.length == 0) {
     return;
   }
+  if (input.value == input.current_value) {
+    return;
+  }
+  input.current_value = input.value;
   input.url = Drupal.settings.mediaYoutube.parse_url + '?parse=' + Drupal.encodePath(input.value);
   input.timer = setTimeout(function () {
 
@@ -57,8 +61,14 @@ Drupal.mediaYoutubeBind.prototype.parseurl = function (input) {
       type: 'GET',
       url: input.url,
       dataType: 'json',
-      success: function (uri) {
-        $('input.media-file-uri').val(uri);
+      success: function (val) {
+        if (val.status == 'ok') {
+          $('input.media-file-uri').val(val.uri);
+          $('.media-youtube-preview-markup').html(val.preview);
+        }
+        else {
+          $('input.media-file-uri').val('');
+        }
       },
       error: function (xmlhttp) {
         alert(Drupal.ajaxError(xmlhttp, input.url));

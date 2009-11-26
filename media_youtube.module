@@ -32,9 +32,14 @@ function media_youtube_menu() {
 
 function media_youtube_ajax_parse() {
   $string = $_GET['parse'];
-  $parse = '';
+  $parse = array();
   if (preg_match('@youtube\.com/watch\?v=([^"\& ]+)@i', $string, $matches)) {
-    $parse = 'youtube://v/'. $matches[1];
+    $parse['uri'] = 'youtube://v/'. $matches[1];
+    $parse['status'] = 'ok';
+    $parse['preview'] = theme('media_youtube_embed', array('style_name' => 'youtube_preview', 'uri' => $parse['uri']));
+  }
+  else {
+    $parse['status'] = 'fail';
   }
   drupal_json_output($parse);
 }
@@ -193,6 +198,11 @@ function media_youtube_files_embed_form() {
     '#type' => 'textfield',
     '#title' => t('YouTube URL or Embed Code'),
     '#description' => t('Please copy and paste the desired YouTube URL or embed code here and press submit.'),
+  );
+  $form['media-youtube-preview'] = array(
+//     '#type' => 'item',
+//     '#title' => t('Preview'),
+    '#markup' => '<div class="media-youtube-preview-markup"></div>',
   );
   return $form;
 }

@@ -3,6 +3,7 @@
 Changelog for the Media: YouTube module.
 ========================================
 
+by aaron: Add preview on parsing new youtube.
 by aaron: Add media_youtube.js.
 by aaron: Add a weight to style containers.
 by aaron: Add JS behavior to url text field.
