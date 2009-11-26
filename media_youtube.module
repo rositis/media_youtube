@@ -32,7 +32,7 @@ function media_youtube_menu() {
 
 function media_youtube_ajax_parse() {
   $string = $_GET['parse'];
-  $parse = $string;
+  $parse = '';
   if (preg_match('@youtube\.com/watch\?v=([^"\& ]+)@i', $string, $matches)) {
     $parse = 'youtube://v/'. $matches[1];
   }
