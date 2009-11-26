@@ -18,6 +18,28 @@
  */
 
 /**
+ * Implement hook_menu().
+ */
+function media_youtube_menu() {
+  // AJAX parser. This function is called to parse a URL from the browser,
+  // returning a valid youtube://uri.
+  $items['media-youtube/parse'] = array(
+    'page callback'    => 'media_youtube_ajax_parse',
+    'access arguments' => array('access content'),
+  );
+  return $items;
+}
+
+function media_youtube_ajax_parse() {
+  $string = $_GET['parse'];
+  $parse = $string;
+  if (preg_match('@youtube\.com/watch\?v=([^"\& ]+)@i', $string, $matches)) {
+    $parse = 'youtube://v/'. $matches[1];
+  }
+  drupal_json_output($parse);
+}
+
+/**
  * Implementation of hook_media_register
  * @TODO please see notes in the hook for revising this
  *
