@@ -376,25 +376,27 @@ function theme_media_youtube_field_formatter_styles($variables) {
 function media_youtube_styles_containers() {
   return array(
     'file' => array(
-      'media_youtube' => array(
-        'label' => t('YouTube Styles'),
-        'data' => array(
-          'streams' => array(
-            'youtube',
+      'containers' => array(
+        'media_youtube' => array(
+          'label' => t('YouTube Styles'),
+          'data' => array(
+            'streams' => array(
+              'youtube',
+            ),
+            'mimetypes' => array(
+              'application/octet-stream',
+            ),
           ),
-          'mimetypes' => array(
-            'application/octet-stream',
+          'weight' => 0,
+          'preview theme' => 'media_youtube_preview_style', // @TODO remove this when doing UI.
+          'filter callback' => 'media_youtube_formatter_filter',
+          'themes' => array(
+            'field_formatter_styles' => 'media_youtube_field_formatter_styles',
+            'styles' => 'media_youtube_styles',
+            'preview' => 'media_youtube_preview_style',
           ),
+          'help' => t('YouTube Styles will display embedded YouTube videos and thumbnails to your choosing, such as by resizing, setting colors, and autoplay. You can !manage.', array('!manage' => l(t('manage your YouTube styles here'), 'admin/config/media/media-youtube-styles'))),
         ),
-        'weight' => 0,
-        'preview theme' => 'media_youtube_preview_style', // @TODO remove this when doing UI.
-        'filter callback' => 'media_youtube_formatter_filter',
-        'themes' => array(
-          'field_formatter_styles' => 'media_youtube_field_formatter_styles',
-          'styles' => 'media_youtube_styles',
-          'preview' => 'media_youtube_preview_style',
-        ),
-        'help' => t('YouTube Styles will display embedded YouTube videos and thumbnails to your choosing, such as by resizing, setting colors, and autoplay. You can !manage.', array('!manage' => l(t('manage your YouTube styles here'), 'admin/config/media/media-youtube-styles'))),
       ),
     ),
   );
@@ -413,26 +415,30 @@ function media_youtube_formatter_filter($variables) {
 function media_youtube_styles_styles() {
   return array(
     'file' => array(
-      'media_youtube' => array(
-        'youtube_thumbnail' => array(
-          'name' => 'youtube_thumbnail',
-          'effects' => array(
-            array('label' => t('Thumbnail'), 'name' => 'thumbnail', 'data' => array('thumbnail' => 1)),
-            array('label' => t('Resize'), 'name' => 'resize', 'data' => array('width' => 100, 'height' => 75)),
-          ),
-        ),
-        'youtube_preview' => array(
-          'name' => 'youtube_preview',
-          'effects' => array(
-            array('label' => t('Autoplay'), 'name' => 'autoplay', 'data' => array('autoplay' => 1)),
-            array('label' => t('Resize'), 'name' => 'resize', 'data' => array('width' => 220, 'height' => 165)),
-          ),
-        ),
-        'youtube_full' => array(
-          'name' => 'youtube_full',
-          'effects' => array(
-            array('label' => t('Autoplay'), 'name' => 'autoplay', 'data' => array('autoplay' => 0)),
-            array('label' => t('Resize'), 'name' => 'resize', 'data' => array('width' => 640, 'height' => 480)),
+      'containers' => array(
+        'media_youtube' => array(
+          'styles' => array(
+            'youtube_thumbnail' => array(
+              'name' => 'youtube_thumbnail',
+              'effects' => array(
+                array('label' => t('Thumbnail'), 'name' => 'thumbnail', 'data' => array('thumbnail' => 1)),
+                array('label' => t('Resize'), 'name' => 'resize', 'data' => array('width' => 100, 'height' => 75)),
+              ),
+            ),
+            'youtube_preview' => array(
+              'name' => 'youtube_preview',
+              'effects' => array(
+                array('label' => t('Autoplay'), 'name' => 'autoplay', 'data' => array('autoplay' => 1)),
+                array('label' => t('Resize'), 'name' => 'resize', 'data' => array('width' => 220, 'height' => 165)),
+              ),
+            ),
+            'youtube_full' => array(
+              'name' => 'youtube_full',
+              'effects' => array(
+                array('label' => t('Autoplay'), 'name' => 'autoplay', 'data' => array('autoplay' => 0)),
+                array('label' => t('Resize'), 'name' => 'resize', 'data' => array('width' => 640, 'height' => 480)),
+              ),
+            ),
           ),
         ),
       ),
