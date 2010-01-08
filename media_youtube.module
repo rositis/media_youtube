@@ -353,7 +353,7 @@ function media_youtube_theme($existing, $type, $theme, $path) {
       'variables' => array('element' => NULL, 'style' => NULL),
     ),
     'media_youtube_embed' => array(
-      'variables' => array('style_name' => NULL, 'uri' => NULL),
+      'variables' => array('style_name' => NULL, 'uri' => NULL, 'alt' => NULL, 'title' => NULL),
     ),
     'media_youtube_styles' => array(
       'variables' => array('element' => NULL, 'style' => NULL),
@@ -388,7 +388,6 @@ function media_youtube_styles_containers() {
             ),
           ),
           'weight' => 0,
-          'preview theme' => 'media_youtube_preview_style', // @TODO remove this when doing UI.
           'filter callback' => 'media_youtube_formatter_filter',
           'themes' => array(
             'field_formatter_styles' => 'media_youtube_field_formatter_styles',
@@ -488,6 +487,7 @@ function theme_media_youtube_styles($variables) {
 function theme_media_youtube_embed($variables) {
   $style_name = $variables['style_name'];
   $style = styles_containers_available_styles('file', 'media_youtube', $style_name);
+  $output = '';
   if (!empty($style)) {
     // Build the URL for display.
     $uri = $variables['uri'];
@@ -540,8 +540,8 @@ function theme_media_youtube_embed($variables) {
             <param name="wmode" value="transparent" />
           </object></div>
 OUTPUT;
-    return $output;
   }
+  return $output;
 }
 
 /** @TODO: Remove below, it's CRUFT **/

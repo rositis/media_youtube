@@ -3,6 +3,7 @@
 Changelog for the Media: YouTube module.
 ========================================
 
+by aaron: Add alt/title to embed thumbnails theme.
 by aaron: Refactor styles containers to match new API.
 by aaron: Add preview on parsing new youtube.
 by aaron: Add media_youtube.js.
