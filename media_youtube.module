@@ -27,6 +27,17 @@ function media_youtube_menu() {
     'page callback'    => 'media_youtube_ajax_parse',
     'access arguments' => array('access content'),
   );
+  $items['media/add/media_youtube'] = array(
+    'title' => 'Add media from YouTube',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('media_youtube_add'),
+    'access arguments' => array('administer media'),
+    'type' => MENU_LOCAL_ACTION,
+    'file' => 'media_youtube.admin.inc',
+    'weight' => -1,
+  );
+
+  $items['admin/content/media/add/media_youtube'] = $items['media/add/media_youtube'];
   return $items;
 }
 
@@ -485,10 +496,10 @@ function theme_media_youtube_styles($variables) {
 }
 
 function theme_media_youtube_embed($variables) {
-  $style_name = $variables['style_name'];
-  $style = styles_containers_available_styles('file', 'media_youtube', $style_name);
+  $preset_name = $variables['preset_name'];
+  $preset = styles_containers_available_styles('file', 'media_youtube', $preset_name);
   $output = '';
-  if (!empty($style)) {
+  if (!empty($preset)) {
     // Build the URL for display.
     $uri = $variables['uri'];
     $wrapper = file_stream_wrapper_get_instance_by_uri($uri);
@@ -498,7 +509,8 @@ function theme_media_youtube_embed($variables) {
     $sample_video = variable_get('media_youtube_preview_sample_video_uri', 'youtube://v/-jubiv7QUco');
     $fullscreen_value = $autoplay = 'false';
     $thumbnail = FALSE;
-    foreach ($style['effects'] as $effect) {
+
+    foreach ($preset['effects'] as $effect) {
       switch ($effect['name']) {
         case 'autoplay':
           $autoplay = $effect['data']['autoplay'] ? 'true' : 'false';
