@@ -6,4 +6,5 @@ package = "Media"
 core = 7.x
 files[] = media_youtube.module
 files[] = MediaYouTubeStreamWrapper.inc
+files[] = media_youtube.admin.inc
 dependencies[] = media
