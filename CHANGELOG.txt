@@ -3,6 +3,7 @@
 Changelog for the Media: YouTube module.
 ========================================
 
+by aaron: Add wysiwyg tab for youtube url.
 by aaron: Add style presets for youtube.
 by aaron: Add action link to add youtube video from media content admin.
 by aaron: Add alt/title to embed thumbnails theme.
