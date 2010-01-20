@@ -10,11 +10,16 @@
  *  Callback for /media/add/media_youtube and
  *  /admin/content/media/add/media_youtube.
  */
-function media_youtube_add($form, &$form_state = array()) {
+function media_youtube_add($form, &$form_state = array(), $redirect = NULL) {
   $form['url'] = array(
     '#type' => 'textfield',
     '#title' => 'URL',
     '#description' => 'Input the URL of the desired YouTube video page.',
+  );
+
+  $form['redirect'] = array(
+    '#type' => 'value',
+    '#value' => $redirect,
   );
 
   $form['submit'] = array(
@@ -71,5 +76,6 @@ function media_youtube_add_submit($form, &$form_state) {
   else {
     drupal_set_message(t('An error occurred and no file was saved.'), 'error');
   }
-  $form_state['redirect'] = 'admin/content/media';
+
+  $form_state['redirect'] = !empty($form_state['values']['redirect']) ? $form_state['values']['redirect'] : 'media/' . $file->fid . '/edit';
 }

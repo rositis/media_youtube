@@ -3,6 +3,7 @@
 Changelog for the Media: YouTube module.
 ========================================
 
+by aaron: Change tab behavior to new required format.
 by aaron: Allow w/h overrides.
 by aaron: Add wysiwyg tab for youtube url.
 by aaron: Add style presets for youtube.

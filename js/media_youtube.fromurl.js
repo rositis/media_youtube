@@ -13,9 +13,13 @@
       init: function() {
         tabset = mediaBrowser.getTabset();
         tabset.tabs('add', '#media_youtube', 'YouTube');
-        mediaBrowser.listen('tabs.tabSelected', function (e, id) {
+        mediaBrowser.listen('tabs.show', function (e, id) {
           if (id == 'media_youtube') {
-            mediaBrowser.getContentArea().load(Drupal.settings.basePath + 'media/add/media_youtube?destination=' + window.location.href +' form#media-youtube-add');
+            // We only need to set this once.
+            // We probably could set it upon load.
+            if (mediaBrowser.getActivePanel().html() == '') {
+              mediaBrowser.getActivePanel().html(options.media_youtube);
+            }
           }
         });
       }
