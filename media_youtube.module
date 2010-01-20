@@ -545,6 +545,15 @@ function theme_media_youtube_embed($variables) {
           $thumbnail = $effect['data']['thumbnail'];
       }
     }
+    if (isset($variables['object']->override)) {
+      $override = $variables['object']->override;
+      if (isset($override['width'])) {
+        $width = $override['width'];
+      }
+      if (isset($override['height'])) {
+        $height = $override['height'];
+      }
+    }
     if ($thumbnail) {
       return theme('image', array(
         'path' => 'http://img.youtube.com/vi/'. check_plain($parts['v']) .'/0.jpg',
