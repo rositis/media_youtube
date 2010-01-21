@@ -287,12 +287,6 @@ function media_youtube_styles_styles() {
       'containers' => array(
         'media_youtube' => array(
           'styles' => array(
-            'youtube_link' => array(
-              'name' => 'youtube_link',
-              'effects' => array(
-                array('label' => t('Link'), 'name' => 'link', 'data' => array()),
-              ),
-            ),
             'youtube_thumbnail' => array(
               'name' => 'youtube_thumbnail',
               'effects' => array(
@@ -349,7 +343,7 @@ function media_youtube_styles_presets() {
       ),
       'original' => array(
         'media_youtube' => array(
-          'youtube_link',
+          'youtube_full',
         ),
       ),
     ),
@@ -387,9 +381,6 @@ function theme_media_youtube_embed($variables) {
 
     foreach ($preset['effects'] as $effect) {
       switch ($effect['name']) {
-        case 'link':
-          $url = 'http://youtube.com/watch?v='. check_plain($parts['v']);
-          return l($variables['object']->filename, $url);
         case 'autoplay':
           $autoplay = $effect['data']['autoplay'] ? 'true' : 'false';
           break;
@@ -416,6 +407,8 @@ function theme_media_youtube_embed($variables) {
         $thumbnail = TRUE;
       }
     }
+    $width = isset($width) ? $width : 560;
+    $height = isset($height) ? $height : 340;
     if ($thumbnail) {
       return theme('image', array(
         'path' => 'http://img.youtube.com/vi/'. check_plain($parts['v']) .'/0.jpg',
