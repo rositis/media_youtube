@@ -45,10 +45,7 @@ function media_youtube_add_validate($form, &$form_state) {
  *  This will create a file object for the YouTube video.
  */
 function media_youtube_add_submit($form, &$form_state) {
-  $url = $form_state['values']['url'];
-  $scheme = 'youtube://';
-  preg_match('@youtube\.com/watch\?v=([^"\& ]+)@i', $url, $matches);
-  $destination = file_stream_wrapper_uri_normalize($scheme . 'v/' . $matches[1]);
+  $uri = media_flickr_media_parse($form_state['values']['url']);
 
   $defaults = array (
     'display' => TRUE,
@@ -57,7 +54,7 @@ function media_youtube_add_submit($form, &$form_state) {
   // @TODO: This won't work for YouTube and many other streams.
 //   copy($url, $destination);
 
-  $file = file_uri_to_object($destination);
+  $file = file_uri_to_object($uri);
 
   file_save($file);
 

@@ -306,6 +306,7 @@ function media_youtube_styles_styles() {
               'effects' => array(
                 array('label' => t('Autoplay'), 'name' => 'autoplay', 'data' => array('autoplay' => 0)),
                 array('label' => t('Resize'), 'name' => 'resize', 'data' => array('width' => 640, 'height' => 480)),
+                array('label' => t('Full screen'), 'name' => 'fullscreen', 'data' => array('fullscreen' => 1)),
               ),
             ),
           ),
@@ -375,7 +376,6 @@ function theme_media_youtube_embed($variables) {
     $parts = $wrapper->get_parameters();
     $url = 'http://youtube.com/v/'. check_plain($parts['v']);
 
-    $sample_video = variable_get('media_youtube_preview_sample_video_uri', 'youtube://v/-jubiv7QUco');
     $fullscreen_value = $autoplay = 'false';
     $thumbnail = FALSE;
 
@@ -463,4 +463,16 @@ function media_youtube_media_browser_plugins() {
   );
 
   return $plugins;
+}
+
+/**
+ *  Implements hook_media_parse().
+ */
+function media_youtube_media_parse($url, $options = array()) {
+  $scheme = 'youtube://';
+  preg_match('@youtube\.com/watch\?v=([^"\& ]+)@i', $url, $matches);
+  if (isset($matches[1])) {
+    return file_stream_wrapper_uri_normalize($scheme . 'v/' . $matches[1]);
+  }
+  // @TODO: Validate for malformed youtube urls.
 }

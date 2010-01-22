@@ -3,6 +3,7 @@
 Changelog for the Media: YouTube module.
 ========================================
 
+by aaron: Implement hook_media_parse().
 by aaron: Remove link behavior for the moment.
 by aaron: Change tab behavior to new required format.
 by aaron: Allow w/h overrides.
