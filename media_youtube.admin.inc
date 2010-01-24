@@ -45,7 +45,7 @@ function media_youtube_add_validate($form, &$form_state) {
  *  This will create a file object for the YouTube video.
  */
 function media_youtube_add_submit($form, &$form_state) {
-  $uri = media_flickr_media_parse($form_state['values']['url']);
+  $uri = media_youtube_media_parse($form_state['values']['url']);
 
   $defaults = array (
     'display' => TRUE,
