@@ -470,7 +470,7 @@ function media_youtube_media_browser_plugins() {
  */
 function media_youtube_media_parse($url, $options = array()) {
   $scheme = 'youtube://';
-  preg_match('@youtube\.com/watch\?v=([^"\& ]+)@i', $url, $matches);
+  preg_match('@youtube\.com/watch[#\?]v=([^"\& ]+)@i', $url, $matches);
   if (isset($matches[1])) {
     return file_stream_wrapper_uri_normalize($scheme . 'v/' . $matches[1]);
   }
