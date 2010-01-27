@@ -11,22 +11,35 @@
  *  /admin/content/media/add/media_youtube.
  */
 function media_youtube_add($form, &$form_state = array(), $redirect = NULL) {
-  $form['url'] = array(
+  $form = array();
+  $form['youtube'] = array(
+    '#type' => 'vertical_tabs',
+  );
+  $form['youtube']['all'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('All YouTube videos'),
+  );
+/*  $form['youtube']['all']['test'] = array(
+    '#type' => 'checkbox',
+    '#title' => 'test',
+  );*/
+  $form['youtube']['add_from_url'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Add from URL'),
+  );
+  $form['youtube']['add_from_url']['url'] = array(
     '#type' => 'textfield',
     '#title' => 'URL',
     '#description' => 'Input the URL of the desired YouTube video page.',
   );
-
   $form['redirect'] = array(
     '#type' => 'value',
     '#value' => $redirect,
   );
-
   $form['submit'] = array(
     '#type' => 'submit',
     '#value' => 'Submit',
   );
-
   return $form;
 }
 
