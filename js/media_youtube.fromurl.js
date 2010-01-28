@@ -83,6 +83,7 @@
           function(data, status) {
             that.mediaFiles = data.media;
             that.emptyMessage = data.empty;
+            that.pager = data.pager;
             that.render();
           },
           'json'
@@ -117,6 +118,8 @@
               return false;
             });
         }
+        jQuery('<div id="media-pager" class="media-pager"></div>').appendTo(this.browser)
+          .html(this.pager);
       }
   };
 };
