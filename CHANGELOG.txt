@@ -3,6 +3,7 @@
 Changelog for the Media: YouTube module.
 ========================================
 
+by aaron: Remove old tab from browser.
 by aaron: Begin work on adding 'All/My Youtubes' vertical tabs.
 by aaron: Add 'YouTube Library' tab to browser w/ all youtube videos.
 by aaron: Allow parsing of url's like youtube.com/watch#v=...

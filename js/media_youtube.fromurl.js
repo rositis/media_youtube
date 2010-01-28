@@ -5,33 +5,33 @@
  *  Create the 'YouTube' tab for the WYSIWYG plugins.
  */
 
-(function ($) {
-  namespace('Drupal.media.browser.plugin');
-
-  Drupal.media.browser.plugin.media_youtube = function(mediaBrowser, options) {
-    return {
-      init: function() {
-        tabset = mediaBrowser.getTabset();
-        tabset.tabs('add', '#media_youtube', 'YouTube');
-        mediaBrowser.listen('tabs.show', function (e, id) {
-          if (id == 'media_youtube') {
-            // We only need to set this once.
-            // We probably could set it upon load.
-            if (mediaBrowser.getActivePanel().html() == '') {
-              mediaBrowser.getActivePanel().html(options.media_youtube);
-            }
-          }
-        });
-      }
-    }
-  };
-
-  // For now, I guess self registration makes sense.
-  // Really though, we should be doing it via drupal_add_js and some settings
-  // from the drupal variable.
-  //@todo: needs a review.
-  Drupal.media.browser.register('media_youtube', Drupal.media.browser.plugin.media_youtube, {});
-})(jQuery);
+// (function ($) {
+//   namespace('Drupal.media.browser.plugin');
+//
+//   Drupal.media.browser.plugin.media_youtube = function(mediaBrowser, options) {
+//     return {
+//       init: function() {
+//         tabset = mediaBrowser.getTabset();
+//         tabset.tabs('add', '#media_youtube', 'YouTube');
+//         mediaBrowser.listen('tabs.show', function (e, id) {
+//           if (id == 'media_youtube') {
+//             // We only need to set this once.
+//             // We probably could set it upon load.
+//             if (mediaBrowser.getActivePanel().html() == '') {
+//               mediaBrowser.getActivePanel().html(options.media_youtube);
+//             }
+//           }
+//         });
+//       }
+//     }
+//   };
+//
+//   // For now, I guess self registration makes sense.
+//   // Really though, we should be doing it via drupal_add_js and some settings
+//   // from the drupal variable.
+//   //@todo: needs a review.
+//   Drupal.media.browser.register('media_youtube', Drupal.media.browser.plugin.media_youtube, {});
+// })(jQuery);
 
 (function ($) {
   namespace('media.browser.plugin');
@@ -42,7 +42,7 @@
       mediaFiles: [],
       init: function() {
         tabset = mediaBrowser.getTabset();
-        tabset.tabs('add', '#youtube_library', 'YouTube Library');
+        tabset.tabs('add', '#youtube_library', 'YouTube');
         var that = this;
         mediaBrowser.listen('tabs.show', function (e, id) {
           if (id == 'youtube_library') {

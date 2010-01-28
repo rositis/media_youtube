@@ -18,12 +18,6 @@
  * Implement hook_menu().
  */
 function media_youtube_menu() {
-  // AJAX parser. This function is called to parse a URL from the browser,
-  // returning a valid youtube://uri.
-//   $items['media-youtube/parse'] = array(
-//     'page callback'    => 'media_youtube_ajax_parse',
-//     'access arguments' => array('access content'),
-//   );
   $items['media/add/media_youtube'] = array(
     'title' => 'Add media from YouTube',
     'page callback' => 'drupal_get_form',
@@ -37,162 +31,6 @@ function media_youtube_menu() {
   $items['admin/content/media/add/media_youtube'] = $items['media/add/media_youtube'];
   return $items;
 }
-
-/**
- *  Parse a YouTube URL from the query and return the result for an AJAX call.
- */
-// function media_youtube_ajax_parse() {
-//   $string = $_GET['parse'];
-//   $parse = array();
-//   if (preg_match('@youtube\.com/watch\?v=([^"\& ]+)@i', $string, $matches)) {
-//     $parse['uri'] = 'youtube://v/'. $matches[1];
-//     $parse['status'] = 'ok';
-//     $parse['preview'] = theme('media_youtube_embed', array('style_name' => 'youtube_preview', 'uri' => $parse['uri']));
-//   }
-//   else {
-//     $parse['status'] = 'fail';
-//   }
-//   drupal_json_output($parse);
-// }
-//
-// function media_youtube_files_embed($parameters) {
-//   $form = drupal_get_form('media_youtube_files_embed_form');
-//   return drupal_render($form);
-// }
-//
-// function media_youtube_files_embed_form() {
-//   // Load the custom JS
-//   $form = array();
-//   $form['#attached']['js'] = array(
-//     drupal_get_path('module', 'media_youtube') . '/js/media_youtube.js'
-//   );
-//   $form['media-youtube-url'] = array(
-//     '#type' => 'textfield',
-//     '#title' => t('YouTube URL or Embed Code'),
-//     '#description' => t('Please copy and paste the desired YouTube URL or embed code here and press submit.'),
-//   );
-//   $form['media-youtube-preview'] = array(
-//     '#markup' => '<div class="media-youtube-preview-markup"></div>',
-//   );
-//   return $form;
-// }
-//
-// function media_youtube_files_embed_form_submit(&$form, $form_state) {
-// //   dpm('my submit');
-// }
-
-/**
- * Fetches all files associated with the current user
- * Provides standard file navigation system.
- *
- * @param $options
- *   array options which define current navigation states
- * @param $invoke
- *   boolean is the first invocation- add specific data that
- *   is required for additional ajax callbacks
- */
-// function media_youtube_user_files_select($parameters) {
-//   global $user;
-//   // Use a default value for limit
-//   if (!isset($parameters['limit']) ) {
-//     $parameters['limit'] = 10;
-//   }
-//
-//   if (isset($parameters['object-type']) && isset($parameters['field-name']) && isset($parameters['bundle'])) {
-//     $instance = field_info_instance($parameters['object-type'], $parameters['field-name'], $parameters['bundle']);
-//     $field = field_info_field($parameters['field-name']);
-//   }
-//
-//   if (empty($instance) || empty($field)) {
-//     // Invalid parameters.
-//     // @TODO another arthur hack to make things "work"
-//     // return;
-//   }
-//   $allowed_schemes = $instance['widget']['settings']['allowed_schemes'];
-//   $directory = $instance['settings']['file_directory'];
-//   $extensions = $instance['settings']['file_extensions'];
-//   $scheme = $field['settings']['uri_scheme'];
-//
-//   // Get all files in the system
-//   $query =  db_select('file', 'f')->extend('PagerDefault');
-//   $query->fields('f', array('fid'));
-//   $query->condition('f.uid', $user->uid, '=');
-//
-//   // Grab only files that are in the YouTube stream.
-//   $query->condition('f.uri', 'youtube://%%', 'LIKE');
-//   /*
-//       @TODO sorry peter, this was bombing things for me
-//             I need to figure out why my data coming back to
-//             you is not valid....
-//
-//       $or = db_or();
-//       foreach ($allowed_schemes as $scheme) {
-//         $or->condition('f.uri', $scheme . '://%', 'LIKE');
-//       }
-//       $query->condition($or);*/
-//   // TODO: filter by mimetype.
-//   $fids = $query->limit($parameters['limit'])->execute()->fetchCol();
-//   // Now load all the files as objects
-//   $files = file_load_multiple($fids);
-//   return theme('media_browser_content_frame', array('files' => $files, 'parameters' => $parameters, 'invoke' => $invoke));
-// }
-
-
-/**
- * Fetches all uploaded files
- * Provides standard file navigation system.
- *
- * @param $options
- *   array options which define current navigation states
- * @param $invoke
- *   boolean is the first invocation- add specific data that
- *   is required for additional ajax callbacks
- */
-// function media_youtube_uploaded_files_select($parameters) {
-//   // Use a default value for limit
-//   if (!isset($parameters['limit']) ) {
-//     $parameters['limit'] = 10;
-//   }
-//
-//   if (isset($parameters['object-type']) && isset($parameters['field-name']) && isset($parameters['bundle'])) {
-//     $instance = field_info_instance($parameters['object-type'], $parameters['field-name'], $parameters['bundle']);
-//     $field = field_info_field($parameters['field-name']);
-//   }
-//
-//   if (empty($instance) || empty($field)) {
-//     // Invalid parameters.
-//     // @TODO another arthur hack to make things "work"
-//     // return;
-//   }
-//   $allowed_schemes = $instance['widget']['settings']['allowed_schemes'];
-//   $directory = $instance['settings']['file_directory'];
-//   $extensions = $instance['settings']['file_extensions'];
-//   $scheme = $field['settings']['uri_scheme'];
-//
-//   // Get all files in the system
-//   // TODO: allow this to use a View.
-//   $query =  db_select('file', 'f')->extend('PagerDefault');
-//   $query->fields('f', array('fid'));
-//
-//   // Grab only files that are in the YouTube stream.
-//   $query->condition('f.uri', 'youtube://%%', 'LIKE');
-//
-//   /*
-//       @TODO sorry peter, this was bombing things for me
-//             I need to figure out why my data coming back to
-//             you is not valid....
-//
-//       $or = db_or();
-//       foreach ($allowed_schemes as $scheme) {
-//         $or->condition('f.uri', $scheme . '://%', 'LIKE');
-//       }
-//       $query->condition($or);*/
-//   // TODO: filter by mimetype.
-//   $fids = $query->limit($parameters['limit'])->execute()->fetchCol();
-//   // Now load all the files as objects
-//   $files = file_load_multiple($fids);
-//   return theme('media_browser_content_frame', array('files' => $files, 'parameters' => $parameters, 'invoke' => $invoke));
-// }
 
 /**
  *  Create stream wrapper for YouTube videos.
@@ -451,15 +289,15 @@ function media_youtube_media_browser_plugins() {
 
   $redirect = array('media/browser', array('query' => array('render' => 'media-popup')));
 
-  $upload_form = drupal_get_form('media_youtube_add', $redirect);
+//   $upload_form = drupal_get_form('media_youtube_add', $redirect);
 
   $plugins['media_youtube'] = array(
     '#attached' => array(
       'js' => array($path . '/js/media_youtube.fromurl.js'),
     ),
-    'settings' => array(
-      'media_youtube' => drupal_render($upload_form),
-    ),
+//     'settings' => array(
+//       'media_youtube' => drupal_render($upload_form),
+//     ),
   );
 
   return $plugins;
