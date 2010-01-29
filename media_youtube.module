@@ -215,7 +215,7 @@ function theme_media_youtube_embed($variables) {
     $url = 'http://youtube.com/v/'. check_plain($parts['v']);
 
     $fullscreen_value = $autoplay = 'false';
-    $thumbnail = FALSE;
+    $in_browser = $thumbnail = FALSE;
 
     foreach ($preset['effects'] as $effect) {
       switch ($effect['name']) {
@@ -244,35 +244,45 @@ function theme_media_youtube_embed($variables) {
       if (isset($override['wysiwyg'])) {
         $thumbnail = TRUE;
       }
+      if (isset($override['browser']) && $override['browser']) {
+        $in_browser = TRUE;
+        $thumbnail = TRUE;
+      }
     }
     $width = isset($width) ? $width : 560;
     $height = isset($height) ? $height : 340;
     if ($thumbnail) {
-      return theme('image', array(
+      $output = theme('image', array(
         'path' => 'http://img.youtube.com/vi/'. check_plain($parts['v']) .'/0.jpg',
         'alt' => $variables['alt'],
         'title' => $variables['title'],
         'attributes' => array('width' => $width, 'height' => $height),
         'getsize' => FALSE,
       ));
+      if ($in_browser) {
+        // Add an overlay that says 'YouTube' to media library browser thumbnails.
+        $output .= '<span />';
+      }
     }
-    $id = 'media-youtube-preview';
-    $div_id = 'media-youtube-preview-wrapper';
-    $flashvars = check_plain(drupal_http_build_query(array('playerMode' => 'embedded')));
-    // <object width="425" height="344"><param name="movie" value="http://www.youtube.com/v/lZ-s3DRZJKY&hl=en&fs=1&"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/lZ-s3DRZJKY&hl=en&fs=1&" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="425" height="344"></embed></object>
-    $output = <<<OUTPUT
-          <div id="$div_id"><object type="application/x-shockwave-flash" height="$height" width="$width" data="$url" id="$id">
-            <param name="movie" value="$url" />
-            <param name="allowScriptAcess" value="sameDomain"/>
-            <param name="quality" value="best"/>
-            <param name="allowFullScreen" value="$fullscreen_value"/>
-            <param name="bgcolor" value="#FFFFFF"/>
-            <param name="scale" value="noScale"/>
-            <param name="salign" value="TL"/>
-            <param name="FlashVars" value="$flashvars" />
-            <param name="wmode" value="transparent" />
-          </object></div>
+    else {
+      $id = 'media-youtube-preview';
+      $div_id = 'media-youtube-preview-wrapper';
+      $flashvars = check_plain(drupal_http_build_query(array('playerMode' => 'embedded')));
+      // <object width="425" height="344"><param name="movie" value="http://www.youtube.com/v/lZ-s3DRZJKY&hl=en&fs=1&"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/lZ-s3DRZJKY&hl=en&fs=1&" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="425" height="344"></embed></object>
+      $output = <<<OUTPUT
+            <div id="$div_id"><object type="application/x-shockwave-flash" height="$height" width="$width" data="$url" id="$id">
+              <param name="movie" value="$url" />
+              <param name="allowScriptAcess" value="sameDomain"/>
+              <param name="quality" value="best"/>
+              <param name="allowFullScreen" value="$fullscreen_value"/>
+              <param name="bgcolor" value="#FFFFFF"/>
+              <param name="scale" value="noScale"/>
+              <param name="salign" value="TL"/>
+              <param name="FlashVars" value="$flashvars" />
+              <param name="wmode" value="transparent" />
+            </object></div>
 OUTPUT;
+    }
   }
   return $output;
 }
@@ -294,6 +304,7 @@ function media_youtube_media_browser_plugins() {
   $plugins['media_youtube'] = array(
     '#attached' => array(
       'js' => array($path . '/js/media_youtube.fromurl.js'),
+      'css' => array($path . '/media_youtube.wysiwyg.css'),
     ),
 //     'settings' => array(
 //       'media_youtube' => drupal_render($upload_form),

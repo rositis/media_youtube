@@ -3,6 +3,7 @@
 Changelog for the Media: YouTube module.
 ========================================
 
+by aaron: Add overlay to media browser library thumbnails.
 by aaron: Begin framework for pager support.
 by aaron: Add an empty message.
 by aaron: Remove old tab from browser.
