@@ -302,6 +302,7 @@ function media_youtube_media_browser_plugins() {
 //   $upload_form = drupal_get_form('media_youtube_add', $redirect);
 
   $plugins['media_youtube'] = array(
+    '#title' => t('YouTube'),
     '#attached' => array(
       'js' => array($path . '/js/media_youtube.fromurl.js'),
       'css' => array($path . '/media_youtube.wysiwyg.css'),
