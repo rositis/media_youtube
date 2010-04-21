@@ -11,6 +11,8 @@
  *  /admin/content/media/add/media_youtube.
  */
 function media_youtube_add($form, &$form_state = array(), $redirect = NULL) {
+  global $user;
+
   $form = array();
   $form['youtube'] = array(
     '#type' => 'vertical_tabs',
@@ -19,6 +21,27 @@ function media_youtube_add($form, &$form_state = array(), $redirect = NULL) {
     '#type' => 'fieldset',
     '#title' => t('All YouTube videos'),
   );
+
+  // Get all youtube files for this user
+  $results = db_query("SELECT fid FROM {file_managed} WHERE uid = :uid AND uri LIKE :uri", array(
+    ':uid' => $user->uid,
+    ':uri' => 'youtube%%'
+  ))->fetchAll();
+
+  foreach ($results as $result) {
+    $file = file_load($result->fid);
+    $output = theme('image', array(
+      'path' => 'http://img.youtube.com/vi/' . pathinfo($file->uri, PATHINFO_FILENAME) . '/0.jpg',
+      'title' => 'title',
+      'alt' => 'alt',
+      'attributes' => array('width' => 150),
+      'getsize' => FALSE,
+    ));
+    $form['youtube']['all'][$file->fid] = array(
+      '#markup' => $output,
+    );
+  }
+
 /*  $form['youtube']['all']['test'] = array(
     '#type' => 'checkbox',
     '#title' => 'test',
@@ -48,7 +71,7 @@ function media_youtube_add($form, &$form_state = array(), $redirect = NULL) {
  */
 function media_youtube_add_validate($form, &$form_state) {
   if (!preg_match('@youtube\.com/watch\?v=([^"\& ]+)@i', $form_state['values']['url'], $matches)) {
-    form_set_error('url', t('Please submit a valide YouTube video URL.'));
+    form_set_error('url', t('Please submit a valid YouTube video URL.'));
   }
 }
 

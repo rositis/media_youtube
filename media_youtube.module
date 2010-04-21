@@ -294,24 +294,17 @@ OUTPUT;
 function media_youtube_media_browser_plugins() {
   $plugins = array();
   $path = drupal_get_path('module', 'media_youtube');
-
   module_load_include('inc', 'media_youtube', 'media_youtube.admin');
-
   $redirect = array('media/browser', array('query' => array('render' => 'media-popup')));
-
-//   $upload_form = drupal_get_form('media_youtube_add', $redirect);
-
+  $upload_form = drupal_get_form('media_youtube_add', $redirect);
   $plugins['media_youtube'] = array(
     '#title' => t('YouTube'),
     '#attached' => array(
       'js' => array($path . '/js/media_youtube.fromurl.js'),
       'css' => array($path . '/media_youtube.wysiwyg.css'),
     ),
-//     'settings' => array(
-//       'media_youtube' => drupal_render($upload_form),
-//     ),
+    '#markup' => drupal_render($upload_form),
   );
-
   return $plugins;
 }
 
