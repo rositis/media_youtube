@@ -81,29 +81,29 @@ function media_youtube_add_validate($form, &$form_state) {
  *  This will create a file object for the YouTube video.
  */
 function media_youtube_add_submit($form, &$form_state) {
-  $uri = media_youtube_media_parse($form_state['values']['url']);
-
   $defaults = array (
     'display' => TRUE,
   );
 
-  // @TODO: This won't work for YouTube and many other streams.
-//   copy($url, $destination);
+  $uri = media_youtube_media_parse($form_state['values']['url']);
 
-  $file = file_uri_to_object($uri);
+  // Check to see if this a duplicate of an existing file
+  $files = file_load_multiple(NULL, array('uri' => $uri));
+  if ($files) {
+    // This is ugly.
+    $file = array_shift($files);
+  }
+  else {
+    // @TODO: This won't work for YouTube and many other streams.
+    // copy($url, $destination);
+    $file = file_uri_to_object($uri);
+    file_save($file);
+  }
 
-  file_save($file);
-
+  // field_attach_insert('media', $file);
   if ($file) {
     $form_state['redirect'] = 'media/' . $file->fid . '/edit';
     field_attach_submit('media', $file, $form, $form_state);
-    // Make a copy of the file object to use as the media object
-    // (file is a field of media and the base table). This is weird.
-    $media = clone($file);
-    $file->file = array();
-    $file->file[LANGUAGE_NONE] = array();
-    $file->file[LANGUAGE_NONE][0] = (array)$file + $defaults;
-    $file->is_new = TRUE;
     field_attach_insert('media', $file);
   }
   else {
