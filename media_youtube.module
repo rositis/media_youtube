@@ -92,7 +92,7 @@ function media_youtube_styles_containers() {
               'youtube',
             ),
             'mimetypes' => array(
-              'application/octet-stream',
+              'video/youtube',
             ),
           ),
           'weight' => 0,
@@ -112,7 +112,7 @@ function media_youtube_styles_containers() {
 function media_youtube_formatter_filter($variables) {
   if (isset($variables['object'])) {
     $object = $variables['object'];
-    return (file_uri_scheme($object->uri) == 'youtube') && ($object->filemime == 'application/octet-stream');
+    return (file_uri_scheme($object->uri) == 'youtube') && ($object->filemime == 'video/youtube');
   }
 }
 
@@ -308,4 +308,31 @@ function media_youtube_media_parse($url, $options = array()) {
     return file_stream_wrapper_uri_normalize($scheme . 'v/' . $matches[1]);
   }
   // @TODO: Validate for malformed youtube urls.
+}
+
+/**
+ * Implements hook_media_internet_providers();
+ */ 
+function media_youtube_media_internet_providers() {
+  return array(
+    'MediaInternetYouTubeHandler' => array(
+      'title' => 'youtube',
+      'logo' => 'youtube.jpg'
+    ),
+  );
+}
+
+class MediaInternetYouTubeHandler extends MediaInternetBaseHandler {
+  public function claim($embedCode) {
+    if (media_youtube_media_parse($embedCode)) {
+      return TRUE;
+    }
+  }
+  
+  public function getFileObject() {
+    $uri = media_youtube_media_parse($this->embedCode);
+    //@todo: this is terribly broken in some ways because the function is really
+    // made for local files which are 'real'
+    return file_uri_to_object($uri);
+  }
 }

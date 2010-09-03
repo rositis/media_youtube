@@ -12,4 +12,12 @@
  */
 class MediaYouTubeStreamWrapper extends MediaReadOnlyStreamWrapper {
   protected $base_url = 'http://youtube.com/watch';
+  
+  function getTarget($f) {
+    return FALSE;  
+  }
+  
+  static function getMimeType($uri, $mapping = NULL) {
+    return 'video/youtube';
+  }
 }
