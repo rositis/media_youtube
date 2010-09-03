@@ -15,24 +15,6 @@
  */
 
 /**
- * Implement hook_menu().
- */
-function media_youtube_menu() {
-  $items['media/add/media_youtube'] = array(
-    'title' => 'Add media from YouTube',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('media_youtube_add'),
-    'access arguments' => array('administer media'),
-    'type' => MENU_LOCAL_ACTION,
-    'file' => 'media_youtube.admin.inc',
-    'weight' => -1,
-  );
-
-  $items['admin/content/media/add/media_youtube'] = $items['media/add/media_youtube'];
-  return $items;
-}
-
-/**
  *  Create stream wrapper for YouTube videos.
  */
 function media_youtube_stream_wrappers() {
@@ -203,6 +185,11 @@ function theme_media_youtube_styles($variables) {
   return theme('media_youtube_embed', $variables);
 }
 
+/**
+ * @todo: get this working
+ *
+ * This code is for embedding videos in WYSIYWG areas, not currently working
+ */
 function theme_media_youtube_embed($variables) {
   $preset_name = $variables['preset_name'];
   $preset = styles_containers_available_styles('file', 'media_youtube', $preset_name);
@@ -278,28 +265,10 @@ OUTPUT;
 }
 
 /**
- * Implement hook_media_browser_plugins
- * @return unknown_type
- */
-function media_youtube_media_browser_plugins() {
-  $plugins = array();
-  $path = drupal_get_path('module', 'media_youtube');
-  module_load_include('inc', 'media_youtube', 'media_youtube.admin');
-  $redirect = array('media/browser', array('query' => array('render' => 'media-popup')));
-  $upload_form = drupal_get_form('media_youtube_add', $redirect);
-  $plugins['media_youtube'] = array(
-    '#title' => t('YouTube'),
-    '#attached' => array(
-      'js' => array($path . '/js/media_youtube.fromurl.js'),
-      'css' => array($path . '/media_youtube.wysiwyg.css'),
-    ),
-    '#markup' => drupal_render($upload_form),
-  );
-  return $plugins;
-}
-
-/**
  *  Implements hook_media_parse().
+ *
+ *  @todo: this might be deprecated now that we have media_internet,
+ *  but the hook is still being called in a couple places in media.
  */
 function media_youtube_media_parse($url, $options = array()) {
   $scheme = 'youtube://';
@@ -314,10 +283,11 @@ function media_youtube_media_parse($url, $options = array()) {
  * Implements hook_media_internet_providers();
  */ 
 function media_youtube_media_internet_providers() {
+  $path = drupal_get_path('module', 'media_youtube');
   return array(
     'MediaInternetYouTubeHandler' => array(
       'title' => 'youtube',
-      'logo' => 'youtube.jpg'
+      'image' => $path . '/images/stream-youtube.png'
     ),
   );
 }
