@@ -298,7 +298,13 @@ class MediaInternetYouTubeHandler extends MediaInternetBaseHandler {
       return TRUE;
     }
   }
-  
+
+  public function save() {
+    $file = $this->getFileObject();
+    file_save($file);
+    return $file;
+  }
+
   public function getFileObject() {
     $uri = media_youtube_media_parse($this->embedCode);
     //@todo: this is terribly broken in some ways because the function is really
