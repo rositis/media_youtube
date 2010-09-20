@@ -99,6 +99,15 @@ function media_youtube_formatter_filter($variables) {
 }
 
 /**
+ * Implementation of the File Styles module's hook_file_styles_filter().
+ */
+function media_youtube_file_styles_filter($object) {
+  if (file_uri_scheme($object->uri) == 'youtube') && ($object->filemime == 'video/youtube')) {
+    return 'media_youtube';
+  }
+}
+
+/**
  *  Implements hook_styles_styles().
  */
 function media_youtube_styles_styles() {
@@ -281,7 +290,7 @@ function media_youtube_media_parse($url, $options = array()) {
 
 /**
  * Implements hook_media_internet_providers();
- */ 
+ */
 function media_youtube_media_internet_providers() {
   $path = drupal_get_path('module', 'media_youtube');
   return array(
