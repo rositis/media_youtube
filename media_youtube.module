@@ -102,7 +102,7 @@ function media_youtube_formatter_filter($variables) {
  * Implementation of the File Styles module's hook_file_styles_filter().
  */
 function media_youtube_file_styles_filter($object) {
-  if (file_uri_scheme($object->uri) == 'youtube') && ($object->filemime == 'video/youtube')) {
+  if ((file_uri_scheme($object->uri) == 'youtube') && ($object->filemime == 'video/youtube')) {
     return 'media_youtube';
   }
 }
