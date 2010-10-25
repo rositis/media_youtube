@@ -18,12 +18,12 @@
  *  Create stream wrapper for YouTube videos.
  */
 function media_youtube_stream_wrappers() {
-  stream_wrapper_register('youtube', 'MediaYouTubeStreamWrapper');
   return array(
     'youtube' => array(
       'name' => t('YouTube videos'),
       'class' => 'MediaYouTubeStreamWrapper',
       'description' => t('Videos provided by YouTube.'),
+      'type' => STREAM_WRAPPERS_READ_VISIBLE,
     ),
   );
 }
