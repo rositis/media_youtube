@@ -111,7 +111,7 @@ function media_youtube_file_styles_filter($object) {
  *  Implements hook_styles_styles().
  */
 function media_youtube_styles_styles() {
-  return array(
+  $styles = array(
     'file' => array(
       'containers' => array(
         'media_youtube' => array(
@@ -143,6 +143,19 @@ function media_youtube_styles_styles() {
       ),
     ),
   );
+
+  // Allow any image style to be applied to the thumbnail.
+  foreach (image_styles() as $style_name => $image_style) {
+    $styles['file']['containers']['media_youtube']['styles']['youtube_thumbnail_' . $style_name] = array(
+      'name' => 'youtube_thumbnail_' . $style_name,
+      'image_style' => $style_name,
+      'effects' => array(
+        array('label' => t('Thumbnail'), 'name' => 'thumbnail', 'data' => array('thumbnail' => 1)),
+      ),
+    );
+  }
+
+  return $styles;
 }
 
 /**
@@ -153,7 +166,7 @@ function media_youtube_styles_presets() {
     'file' => array(
       'square_thumbnail' => array(
         'media_youtube' => array(
-          'youtube_thumbnail',
+          'youtube_thumbnail_square_thumbnail',
         ),
       ),
       'thumbnail' => array(
@@ -249,13 +262,28 @@ function theme_media_youtube_embed($variables) {
     $height = isset($height) ? $height : 340;
     $video_id = check_plain($parts['v']);
     if ($thumbnail) {
-      $output = theme('image', array(
+      // @todo Clean this up.
+      $image_variables = array(
         'path' => 'http://img.youtube.com/vi/'. check_plain($parts['v']) .'/0.jpg',
         'alt' => $variables['alt'],
         'title' => $variables['title'],
-        'attributes' => array('width' => $width, 'height' => $height),
         'getsize' => FALSE,
-      ));
+      );
+      if (isset($preset['image_style'])) {
+        $local_path = 'public://media-youtube/' . check_plain($parts['v']) . '.jpg';
+        if (!file_exists($local_path)) {
+          $dirname = drupal_dirname($local_path);
+          file_prepare_directory($dirname, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS);
+          @copy($image_variables['path'], $local_path);
+        }
+        $image_variables['path'] = $local_path;
+        $image_variables['style_name'] = $preset['image_style'];
+        $output = theme('image_style', $image_variables);
+      }
+      else {
+        $image_variables['attributes'] = array('width' => $width, 'height' => $height);
+        $output = theme('image', $image_variables);
+      }
       if ($in_browser) {
         // Add an overlay that says 'YouTube' to media library browser thumbnails.
         $output .= '<span />';
