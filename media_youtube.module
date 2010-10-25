@@ -290,6 +290,22 @@ function theme_media_youtube_embed($variables) {
       }
     }
     else {
+      $output = '<div class="media-youtube-outer-wrapper"><div id="video_'. $video_id .'" class="media-youtube-preview-wrapper" style="width: ' . $width . 'px; height: ' . $height . 'px;">';
+
+      // For users with JavaScript, these object and embed tags will be replaced
+      // by an iframe, so that we can support users without Flash.
+      $output .= '<object width="' . $width . '" height="' . $height . '">';
+      $output .= '<param name="movie" value="http://www.youtube.com/v/' . $video_id . '"></param>';
+      $output .= '<param name="allowFullScreen" value="true"></param>';
+      $output .= '<embed src="http://www.youtube.com/v/' . $video_id .'" type="application/x-shockwave-flash" width="' . $width . '" height="' . $height . '" allowfullscreen="true"></embed>';
+      $output .= '</object>';
+      $output .= '</div></div>';
+
+      $media_youtube_preview = array();
+      $media_youtube_preview['media_youtube']['width'] = $width;
+      $media_youtube_preview['media_youtube']['height'] = $height;
+      $media_youtube_preview['media_youtube']['video_id'] = $video_id;
+      $media_youtube_preview['media_youtube']['fullscreen'] = $fullscreen_value;
       $media_youtube_preview['media_youtube']['id'] = 'media-youtube-preview';
 
       // @todo Replace this inline JavaScript with at least calls to
