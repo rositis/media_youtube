@@ -264,19 +264,13 @@ function theme_media_youtube_embed($variables) {
     if ($thumbnail) {
       // @todo Clean this up.
       $image_variables = array(
-        'path' => 'http://img.youtube.com/vi/'. check_plain($parts['v']) .'/0.jpg',
+        'path' => $wrapper->getOriginalThumbnailPath(),
         'alt' => $variables['alt'],
         'title' => $variables['title'],
         'getsize' => FALSE,
       );
       if (isset($preset['image_style'])) {
-        $local_path = 'public://media-youtube/' . check_plain($parts['v']) . '.jpg';
-        if (!file_exists($local_path)) {
-          $dirname = drupal_dirname($local_path);
-          file_prepare_directory($dirname, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS);
-          @copy($image_variables['path'], $local_path);
-        }
-        $image_variables['path'] = $local_path;
+        $image_variables['path'] = $wrapper->getLocalThumbnailPath();
         $image_variables['style_name'] = $preset['image_style'];
         $output = theme('image_style', $image_variables);
       }
