@@ -28,6 +28,11 @@ function media_youtube_stream_wrappers() {
   );
 }
 
+function media_youtube_media_format_form_prepare_alter(&$form, &$form_state, $media) {
+  $settings = array('autosubmit' => ($media->type == "video"));
+  drupal_add_js(array('media_format_form' => $settings), 'setting');
+}
+
 /**
  *  Implements hook_theme().
  */
@@ -275,7 +280,12 @@ function theme_media_youtube_embed($variables) {
         $output = theme('image_style', $image_variables);
       }
       else {
-        $image_variables['attributes'] = array('width' => $width, 'height' => $height);
+        // We need to add this style attribute here so that it doesn't get lost
+        // If you resize a video in a node, save it, edit it, but don't adjust
+        // the sizing of the video while editing, the size will revert to the
+        // default.  Adding the specific size here retains the original resizing
+        $WYSIWYG = isset($variables['object']->override['style']) ? $variables['object']->override['style'] : '';
+        $image_variables['attributes'] = array('width' => $width, 'height' => $height, 'style' => $WYSIWYG);
         $output = theme('image', $image_variables);
       }
       if ($in_browser) {
@@ -284,7 +294,11 @@ function theme_media_youtube_embed($variables) {
       }
     }
     else {
-      $output = '<div class="media-youtube-outer-wrapper"><div id="video_'. $video_id .'" class="media-youtube-preview-wrapper" style="width: ' . $width . 'px; height: ' . $height . 'px;">';
+      // This extra wrapper around the video allows the video to be resized to fit
+      // dimensions set in a WYSIWYG.  Otherwise the styles set will be overridden
+      // by the JS fluid width resizing method.
+      $WYSIWYG = isset($variables['object']->override['style']) ? $variables['object']->override['style'] : '';
+      $output = '<div class="media-youtube-outer-wrapper" style="' . check_plain($WYSIWYG) . '"><div id="video_'. $video_id .'" class="media-youtube-preview-wrapper" style="width: ' . $width . 'px; height: ' . $height . 'px;">';
 
       // For users with JavaScript, these object and embed tags will be replaced
       // by an iframe, so that we can support users without Flash.
