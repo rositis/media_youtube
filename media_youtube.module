@@ -310,7 +310,6 @@ function theme_media_youtube_embed($variables) {
       $prefixed_video_id_json = drupal_json_encode('video_' . $video_id);
       $JSObject = 'Drupal.settings.media_youtube[' . $prefixed_video_id_json . ']';
       $output .= '<script type="text/javascript">
-        <!--//--><![CDATA[//><!--
         if (Drupal.settings && Drupal.media_youtube) {
           if (!Drupal.settings.media_youtube) {
             Drupal.settings.media_youtube = {};
@@ -323,7 +322,6 @@ function theme_media_youtube_embed($variables) {
           ' . $JSObject . '.id = ' . $video_id_json . ';
           Drupal.media_youtube.insertEmbed(' . $prefixed_video_id_json . ');
         }
-        //--><!]]>
         </script>';
     }
     drupal_add_js(drupal_get_path('module', 'media_youtube') . '/js/media_youtube.js');
