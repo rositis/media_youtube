@@ -36,3 +36,11 @@ function media_youtube_update_7001() {
 
   return array();
 }
+
+/**
+ * Rebuild themes.
+ */
+function media_youtube_update_7002() {
+  drupal_theme_rebuild();
+  return array();
+}
