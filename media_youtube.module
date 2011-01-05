@@ -66,7 +66,22 @@ function theme_media_youtube_field_formatter_styles($variables) {
 }
 
 /**
- *  Implements hook_styles_containers().
+ * Implementation of Styles module hook_styles_register().
+ */
+function media_youtube_styles_register() {
+  return array(
+    'MediaYouTubeStyles' => array(
+      'field_types' => 'file',
+      'name' => t('MediaYouTube'),
+      'description' => t('Media YouTube styles.'),
+      'path' => drupal_get_path('module', 'media_youtube') .'/includes',
+      'file' => 'media_youtube.styles.inc',
+    ),
+  );
+}
+
+/**
+ *  Implements hook_styles_containers(). (Deprecated in version 2)
  */
 function media_youtube_styles_containers() {
   return array(
