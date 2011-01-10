@@ -16,7 +16,8 @@ function media_youtube_styles_default_containers() {
       'containers' => array(
         'media_youtube' => array(
           'class' => 'MediaYouTubeStyles',
-          'name' => 'Media: YouTube',
+          'name' => 'media_youtube',
+          'label' => t('YouTube'),
         ),
       ),
     ),
@@ -34,6 +35,9 @@ function media_youtube_styles_default_presets() {
         'media_youtube' => array(
           'default preset' => 'linked_thumbnail',
           'styles' => array(
+            'original' => array(
+              'default preset' => 'video',
+            ),
             'thumbnail' => array(
               'default preset' => 'linked_thumbnail',
             ),

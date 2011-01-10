@@ -31,8 +31,6 @@ function media_youtube_update_7001() {
   if (function_exists('styles_style_flush')) {
     styles_style_flush();
   }
-  // Ensure we catch new module files.
-  cache_clear_all();
 
   return array();
 }
@@ -42,5 +40,11 @@ function media_youtube_update_7001() {
  */
 function media_youtube_update_7002() {
   drupal_theme_rebuild();
+  return array();
+}
+/**
+ * Add label to Media: YouTube file style.
+ */
+function media_youtube_update_7003() {
   return array();
 }
