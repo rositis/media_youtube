@@ -81,11 +81,13 @@ function theme_media_youtube_field_formatter_styles($variables) {
 }
 
 /**
- * NOTE: Deprecated with Styles version 2.
+ * Preview for Styles UI.
  */
 function theme_media_youtube_preview_style($variables) {
-  $variables['uri'] = variable_get('media_youtube_preview_uri', 'youtube://v/-jubiv7QUco');
-  return theme('media_youtube_embed', $variables);
+  $variables['url'] = variable_get('media_youtube_preview_url', 'http://youtube.com/watch?v=-jubiv7QUco');
+  $variables['field_type'] = 'file';
+  $variables['object'] = media_parse_to_file($variables['url']);
+  return theme('styles', $variables);
 }
 
 /**

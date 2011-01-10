@@ -18,6 +18,7 @@ function media_youtube_styles_default_containers() {
           'class' => 'MediaYouTubeStyles',
           'name' => 'media_youtube',
           'label' => t('YouTube'),
+          'preview' => 'media_youtube_preview_style',
         ),
       ),
     ),
