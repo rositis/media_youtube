@@ -13,9 +13,12 @@
  *  $height - The height to render.
  *  $autoplay - If TRUE, then start the player automatically when displaying.
  *  $fullscreen - Whether to allow fullscreen playback.
+ *
+ * Note that we set the width & height of the outer wrapper manually so that
+ * the JS will respect that when resizing later.
  */
 ?>
-<div class="media-youtube-outer-wrapper" id="media-youtube-<?php print $id; ?>">
+<div class="media-youtube-outer-wrapper" id="media-youtube-<?php print $id; ?>" style="width: <?php print $width; ?>px; height: <?php print $height; ?>px;">
   <div class="media-youtube-preview-wrapper" id="<?php print $wrapper_id; ?>">
     <?php print $output; ?>
   </div>
