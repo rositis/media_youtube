@@ -48,3 +48,4 @@ function media_youtube_update_7003() {
 function media_youtube_update_7004() {
   drupal_theme_rebuild();
   return array();
+}
