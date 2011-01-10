@@ -36,15 +36,15 @@ function media_youtube_update_7001() {
 }
 
 /**
- * Rebuild themes.
- */
-function media_youtube_update_7002() {
-  drupal_theme_rebuild();
-  return array();
-}
-/**
  * Add label to Media: YouTube file style.
  */
 function media_youtube_update_7003() {
   return array();
 }
+
+/**
+ * Rebuild themes.
+ */
+function media_youtube_update_7004() {
+  drupal_theme_rebuild();
+  return array();

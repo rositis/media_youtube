@@ -42,7 +42,7 @@ function media_youtube_media_format_form_prepare_alter(&$form, &$form_state, $me
 function media_youtube_theme($existing, $type, $theme, $path) {
   return array(
     'media_youtube_preview_style' => array(
-      'variables' => array('field_type' => NULL, 'container_name' => NULL, 'style_name' => NULL),
+      'variables' => array('style_name' => NULL),
       'file' => 'media_youtube.theme.inc',
       'path' => $path . '/includes/themes',
     ),
