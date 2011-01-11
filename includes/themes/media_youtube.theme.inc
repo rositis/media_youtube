@@ -84,9 +84,10 @@ function theme_media_youtube_field_formatter_styles($variables) {
  * Preview for Styles UI.
  */
 function theme_media_youtube_preview_style($variables) {
-  $variables['url'] = media_youtube_variable_get('preview_url');
+  $variables['uri'] = media_youtube_variable_get('preview_uri');
   $variables['field_type'] = 'file';
-  $variables['object'] = media_parse_to_file($variables['url']);
+  $variables['object'] = file_uri_to_object($variables['uri']);
+
   return theme('styles', $variables);
 }
 

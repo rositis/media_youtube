@@ -106,7 +106,7 @@ function media_youtube_variable_default($name = NULL) {
       'height' =>340,
       'autoplay' => FALSE,
       'fullscreen' => TRUE,
-      'preview_url' => 'http://youtube.com/watch?v=-jubiv7QUco',
+      'preview_uri' => 'youtube://v/-jubiv7QUco',
     );
   }
 
