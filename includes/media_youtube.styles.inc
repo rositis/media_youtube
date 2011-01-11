@@ -2,7 +2,7 @@
 // $Id$
 
 /**
- * @file
+ * @file media_youtube/includes/media_youtube.styles.inc
  * Styles definitions for Media: YouTube.
  */
 
@@ -75,10 +75,9 @@ function media_youtube_styles_default_presets() {
                 'settings' => array(),
               ),
               array(
-                'name' => 'resize',
+                'name' => 'image_style',
                 'settings' => array(
-                  'width' => 120,
-                  'height' => 120,
+                  'image_style' => 'square_thumbnail',
                 ),
               ),
               array(

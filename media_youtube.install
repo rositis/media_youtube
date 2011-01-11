@@ -56,3 +56,10 @@ function media_youtube_update_7004() {
 function media_youtube_update_7005() {
   return array();
 }
+
+/**
+ * Add a square thumbnail preset.
+ */
+function media_youtube_update_7006() {
+  return array();
+}
