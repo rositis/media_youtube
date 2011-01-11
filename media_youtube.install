@@ -49,3 +49,10 @@ function media_youtube_update_7004() {
   drupal_theme_rebuild();
   return array();
 }
+
+/**
+ * Add a large video preset and medium thumbnail.
+ */
+function media_youtube_update_7005() {
+  return array();
+}

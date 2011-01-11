@@ -45,8 +45,11 @@ function media_youtube_styles_default_presets() {
             'square_thumbnail' => array(
               'default preset' => 'linked_square_thumbnail',
             ),
+            'medium' => array(
+              'default preset' => 'linked_medium',
+            ),
             'large' => array(
-              'default preset' => 'video',
+              'default preset' => 'large_video',
             ),
           ),
           'presets' => array(
@@ -83,7 +86,36 @@ function media_youtube_styles_default_presets() {
                 'settings' => array(),
               ),
             ),
+            'linked_medium' => array(
+              array(
+                'name' => 'link_to_media',
+                'settings' => array(),
+              ),
+              array(
+                'name' => 'image_style',
+                'settings' => array(
+                  'image_style' => 'medium',
+                ),
+              ),
+              array(
+                'name' => 'thumbnail',
+                'settings' => array(),
+              ),
+            ),
             'video' => array(
+              array(
+                'name' => 'video',
+                'settings' => array(),
+              ),
+            ),
+            'large_video' => array(
+              array(
+                'name' => 'resize',
+                'settings' => array(
+                  'width' => 480,
+                  'height' => 360,
+                ),
+              ),
               array(
                 'name' => 'video',
                 'settings' => array(),
