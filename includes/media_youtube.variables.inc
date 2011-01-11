@@ -2,7 +2,7 @@
 // $Id$
 
 /**
- * @file media_youtube.variables.inc
+ * @file media_youtube/includes/media_youtube.variables.inc
  * Variable defaults for Media: YouTube.
  */
 
@@ -106,6 +106,7 @@ function media_youtube_variable_default($name = NULL) {
       'height' =>340,
       'autoplay' => FALSE,
       'fullscreen' => TRUE,
+      'preview_url' => 'http://youtube.com/watch?v=-jubiv7QUco',
     );
   }
 
