@@ -2,16 +2,17 @@
 // $Id$
 
 /**
- *  @file
- *  Media YouTube provides a stream wrapper and formatters for videos provided
+ *  @file media_youtube/media_youtube.module
+ *
+ *  Media: YouTube provides a stream wrapper and formatters for videos provided
  *  by YouTube, available at http://youtube.com/.
  *
  *  @TODO:
- *  Create a thumbnail importer for media styles/ image styles.
  *  Tie in YouTube API.
  *  Allow editors to search for videos to display on the browser.
  *  Allow editors to put in a youtube username to display on the browser.
  *  Allow editors to log in w/ their credentials.
+ *  Allow editors to upload videos to YouTube.
  */
 
 // A registry of variable_get defaults.
