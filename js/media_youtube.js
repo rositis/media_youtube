@@ -1,4 +1,3 @@
-// $Id$
 
 /**
  * @file media_youtube/js/media_youtube.js

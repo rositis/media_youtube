@@ -1,5 +1,4 @@
 <?php
-// $Id$
 
 /**
  * @file media_youtube/includes/themes/media_youtube.theme.inc
