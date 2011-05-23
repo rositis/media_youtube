@@ -8,4 +8,5 @@ files[] = MediaYouTubeStreamWrapper.inc
 files[] = MediaInternetYouTubeHandler.inc
 files[] = media_youtube.admin.inc
 files[] = includes/media_youtube.styles.inc
+files[] = includes/MediaYouTubeStyles.inc
 dependencies[] = media_internet
