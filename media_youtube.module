@@ -1,17 +1,17 @@
 <?php
 
 /**
- *  @file media_youtube/media_youtube.module
+ * @file media_youtube/media_youtube.module
  *
- *  Media: YouTube provides a stream wrapper and formatters for videos provided
- *  by YouTube, available at http://youtube.com/.
+ * Media: YouTube provides a stream wrapper and formatters for videos provided
+ * by YouTube, available at http://youtube.com/.
  *
- *  @TODO:
- *  Tie in YouTube API.
- *  Allow editors to search for videos to display on the browser.
- *  Allow editors to put in a youtube username to display on the browser.
- *  Allow editors to log in w/ their credentials.
- *  Allow editors to upload videos to YouTube.
+ * @TODO:
+ * Tie in YouTube API.
+ * Allow editors to search for videos to display on the browser.
+ * Allow editors to put in a youtube username to display on the browser.
+ * Allow editors to log in w/ their credentials.
+ * Allow editors to upload videos to YouTube.
  */
 
 // A registry of variable_get defaults.
@@ -24,7 +24,20 @@ include_once('includes/media_youtube.variables.inc');
 include_once('includes/media_youtube.styles.inc');
 
 /**
- *  Create stream wrapper for YouTube videos.
+ * Implements hook_media_internet_providers().
+ */
+function media_youtube_media_internet_providers() {
+  $path = drupal_get_path('module', 'media_youtube');
+  return array(
+    'MediaInternetYouTubeHandler' => array(
+      'title' => 'youtube',
+      'image' => $path . '/images/stream-youtube.png'
+    ),
+  );
+}
+
+/**
+ * Implements hook_stream_wrappers().
  */
 function media_youtube_stream_wrappers() {
   return array(
@@ -37,13 +50,8 @@ function media_youtube_stream_wrappers() {
   );
 }
 
-function media_youtube_media_format_form_prepare_alter(&$form, &$form_state, $media) {
-  $settings = array('autosubmit' => ($media->type == "video"));
-  drupal_add_js(array('media_format_form' => $settings), 'setting');
-}
-
 /**
- *  Implements hook_theme().
+ * Implements hook_theme().
  */
 function media_youtube_theme($existing, $type, $theme, $path) {
   return array(
@@ -77,29 +85,21 @@ function media_youtube_theme($existing, $type, $theme, $path) {
 }
 
 /**
- *  Implements hook_media_parse().
+ * Implements hook_media_parse().
  *
- *  @todo: this might be deprecated now that we have media_internet,
- *  but the hook is still being called in a couple places in media.
+ * @todo This hook should be deprecated. Refactor Media module to not call it
+ *   any more, since media_internet should be able to automatically route to the
+ *   appropriate handler.
  */
-function media_youtube_media_parse($url, $options = array()) {
-  $scheme = 'youtube://';
-  preg_match('@youtube\.com/watch[#\?]v=([^"\& ]+)@i', $url, $matches);
-  if (isset($matches[1])) {
-    return file_stream_wrapper_uri_normalize($scheme . 'v/' . $matches[1]);
-  }
-  // @TODO: Validate for malformed youtube urls.
+function media_youtube_media_parse($embed_code) {
+  $handler = new MediaInternetYouTubeHandler($embed_code);
+  return $handler->parse($embed_code);
 }
 
 /**
- * Implements hook_media_internet_providers();
+ * Implements hook_media_format_form_prepare_alter().
  */
-function media_youtube_media_internet_providers() {
-  $path = drupal_get_path('module', 'media_youtube');
-  return array(
-    'MediaInternetYouTubeHandler' => array(
-      'title' => 'youtube',
-      'image' => $path . '/images/stream-youtube.png'
-    ),
-  );
+function media_youtube_media_format_form_prepare_alter(&$form, &$form_state, $media) {
+  $settings = array('autosubmit' => ($media->type == "video"));
+  drupal_add_js(array('media_format_form' => $settings), 'setting');
 }

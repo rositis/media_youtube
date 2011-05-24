@@ -6,8 +6,15 @@
  * @see hook_media_internet_providers().
  */
 class MediaInternetYouTubeHandler extends MediaInternetBaseHandler {
+  public function parse($embedCode) {
+    preg_match('@youtube\.com/watch[#\?]v=([^"\& ]+)@i', $embedCode, $matches);
+    if (isset($matches[1])) {
+      return file_stream_wrapper_uri_normalize('youtube://v/' . $matches[1]);
+    }
+  }
+
   public function claim($embedCode) {
-    if (media_youtube_media_parse($embedCode)) {
+    if ($this->parse($embedCode)) {
       return TRUE;
     }
   }
@@ -16,7 +23,7 @@ class MediaInternetYouTubeHandler extends MediaInternetBaseHandler {
     // @todo Media module currently fails when two files try to have the same
     //   URI, so catch that in the validation step. Some day, it would be nice
     //   to allow it, however. See http://drupal.org/node/952422.
-    $uri = media_youtube_media_parse($this->embedCode);
+    $uri = $this->parse($this->embedCode);
     $existing_files = file_load_multiple(array(), array('uri' => $uri));
     if (count($existing_files)) {
       throw new MediaInternetValidationException(t('You have entered a URL for a video that is already in your library.'));
@@ -30,7 +37,7 @@ class MediaInternetYouTubeHandler extends MediaInternetBaseHandler {
   }
 
   public function getFileObject() {
-    $uri = media_youtube_media_parse($this->embedCode);
+    $uri = $this->parse($this->embedCode);
     //@todo: this is terribly broken in some ways because the function is really
     // made for local files which are 'real'
     return file_uri_to_object($uri);
@@ -48,7 +55,7 @@ class MediaInternetYouTubeHandler extends MediaInternetBaseHandler {
    *   handle namespaces first.
    */
   public function getMRSS() {
-    $uri = media_youtube_media_parse($this->embedCode);
+    $uri = $this->parse($this->embedCode);
     $video_id = arg(1, file_uri_target($uri));
     $rss_url = url('http://gdata.youtube.com/feeds/api/videos/' . $video_id, array('query' => array('v' => '2')));
     // @todo Use media_retrieve_xml() once it's upgraded to include elements
@@ -66,7 +73,7 @@ class MediaInternetYouTubeHandler extends MediaInternetBaseHandler {
    *   Otherwise, NULL.
    */
   public function getOEmbed() {
-    $uri = media_youtube_media_parse($this->embedCode);
+    $uri = $this->parse($this->embedCode);
     $external_url = drupal_realpath($uri);
     $oembed_url = url('http://www.youtube.com/oembed', array('query' => array('url' => $external_url, 'format' => 'json')));
     $response = drupal_http_request($oembed_url);
