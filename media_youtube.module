@@ -17,11 +17,14 @@
 // A registry of variable_get defaults.
 include_once('includes/media_youtube.variables.inc');
 
-// Hooks and callbacks for integrating with Styles module.
+// Hooks and callbacks for integrating with Styles module for display.
 // @todo Can save a little overhead for people without Styles module by wrapping
 //   this inside a module_exists('styles'). However, is that safe to do in
 //   global context? If not, is there any down side to doing it in hook_init()?
 include_once('includes/media_youtube.styles.inc');
+
+// Hooks and callbacks for integrating with File Entity module for display.
+include_once('includes/media_youtube.formatters.inc');
 
 /**
  * Implements hook_media_internet_providers().
@@ -102,4 +105,18 @@ function media_youtube_media_parse($embed_code) {
 function media_youtube_media_format_form_prepare_alter(&$form, &$form_state, $media) {
   $settings = array('autosubmit' => ($media->type == "video"));
   drupal_add_js(array('media_format_form' => $settings), 'setting');
+}
+
+/**
+ * Implements hook_ctools_plugin_api().
+ */
+function media_youtube_ctools_plugin_api($owner, $api) {
+  static $api_versions = array(
+    'file_entity' => array(
+      'file_default_displays' => 1,
+    ),
+  );
+  if (isset($api_versions[$owner][$api])) {
+    return array('version' => $api_versions[$owner][$api]);
+  }
 }
