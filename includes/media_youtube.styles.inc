@@ -178,11 +178,11 @@ function media_youtube_styles_default_containers() {
  * Implementation of Styles module hook_styles_default_presets().
  */
 function media_youtube_styles_default_presets() {
-  return array(
+  $presets = array(
     'file' => array(
       'containers' => array(
         'media_youtube' => array(
-          'default preset' => 'linked_thumbnail',
+          'default preset' => 'unlinked_thumbnail',
           'styles' => array(
             'original' => array(
               'default preset' => 'video',
@@ -209,7 +209,7 @@ function media_youtube_styles_default_presets() {
             ),
             'linked_thumbnail' => array(
               array(
-                'name' => 'link_to_media',
+                'name' => 'linkToMedia',
                 'settings' => array(),
               ),
               array(
@@ -219,11 +219,11 @@ function media_youtube_styles_default_presets() {
             ),
             'linked_square_thumbnail' => array(
               array(
-                'name' => 'link_to_media',
+                'name' => 'linkToMedia',
                 'settings' => array(),
               ),
               array(
-                'name' => 'image_style',
+                'name' => 'imageStyle',
                 'settings' => array(
                   'image_style' => 'square_thumbnail',
                 ),
@@ -235,11 +235,11 @@ function media_youtube_styles_default_presets() {
             ),
             'linked_medium' => array(
               array(
-                'name' => 'link_to_media',
+                'name' => 'linkToMedia',
                 'settings' => array(),
               ),
               array(
-                'name' => 'image_style',
+                'name' => 'imageStyle',
                 'settings' => array(
                   'image_style' => 'medium',
                 ),
@@ -273,4 +273,20 @@ function media_youtube_styles_default_presets() {
       ),
     ),
   );
+  // Allow any image style to be applied to the thumbnail.
+  foreach (image_styles() as $style_name => $image_style) {
+    $presets['file']['containers']['media_youtube']['presets'][$style_name] = array(
+      array(
+        'name' => 'imageStyle',
+        'settings' => array(
+          'image_style' => $style_name,
+        ),
+      ),
+      array(
+        'name' => 'thumbnail',
+        'settings' => array(),
+      ),
+    );
+  }
+  return $presets;
 }

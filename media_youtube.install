@@ -69,3 +69,10 @@ function media_youtube_update_7006() {
 function media_youtube_update_7007() {
   registry_rebuild();
 }
+
+/**
+ * Rebuild styles presets to use camelCase.
+ */
+function media_youtube_update_7008() {
+  return array();
+}

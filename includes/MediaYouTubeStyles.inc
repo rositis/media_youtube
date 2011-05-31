@@ -9,24 +9,24 @@ class MediaYouTubeStyles extends FileStyles {
   public $autoplay;
   public $fullscreen;
 
-  function get_autoplay() {
+  function getAutoplay() {
     return $this->get('autoplay');
   }
-  function set_autoplay($value) {
+  function setAutoplay($value) {
     return $this->set('autoplay', $value);
   }
-  function get_fullscreen() {
+  function getFullscreen() {
     return $this->get('fullscreen');
   }
-  function set_fullscreen($value) {
+  function setFullscreen($value) {
     return $this->set('fullscreen', $value);
   }
 
-  function get_image_uri() {
-    if ($image_uri = $this->get('image_uri')) {
+  function getImageUri() {
+    if ($image_uri = $this->get('imageUri')) {
       return $image_uri;
     }
-    $object = $this->get_object();
+    $object = $this->getObject();
     if ($object->uri) {
       $wrapper = file_stream_wrapper_get_instance_by_uri($object->uri);
       return $wrapper->getLocalThumbnailPath();
@@ -34,12 +34,12 @@ class MediaYouTubeStyles extends FileStyles {
   }
   function video($effect) {
     $variables = array(
-      'uri' => $this->get_uri(),
-      'width' => $this->get_width(),
-      'height' => $this->get_height(),
-      'autoplay' => $this->get_autoplay(),
-      'fullscreen' => $this->get_fullscreen(),
+      'uri' => $this->getUri(),
+      'width' => $this->getWidth(),
+      'height' => $this->getHeight(),
+      'autoplay' => $this->getAutoplay(),
+      'fullscreen' => $this->getFullscreen(),
     );
-    $this->set_output(theme('media_youtube_video', $variables));
+    $this->setOutput(theme('media_youtube_video', $variables));
   }
 }
