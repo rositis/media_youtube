@@ -76,3 +76,10 @@ function media_youtube_update_7007() {
 function media_youtube_update_7008() {
   return array();
 }
+
+/**
+ * Change default styles presets.
+ */
+function media_youtube_update_7009() {
+  return array();
+}
