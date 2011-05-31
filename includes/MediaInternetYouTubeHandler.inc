@@ -7,9 +7,18 @@
  */
 class MediaInternetYouTubeHandler extends MediaInternetBaseHandler {
   public function parse($embedCode) {
-    preg_match('@youtube\.com/watch[#\?]v=([^"\& ]+)@i', $embedCode, $matches);
-    if (isset($matches[1])) {
-      return file_stream_wrapper_uri_normalize('youtube://v/' . $matches[1]);
+    $patterns = array(
+      '@youtube\.com/watch[#\?]v=([^"\& ]+)@i',
+      '@youtube\.com/embed/([^"\&\? ]+)@i',
+      '@youtube\.com/v/([^"\&\? ]+)@i',
+      '@youtube\.com/\?v=([^"\& ]+)@i',
+      '@youtu.be/([^"\&\? ]+)@i',
+    );
+    foreach ($patterns as $pattern) {
+      preg_match($pattern, $embedCode, $matches);
+      if (isset($matches[1])) {
+        return file_stream_wrapper_uri_normalize('youtube://v/' . $matches[1]);
+      }
     }
   }
 
