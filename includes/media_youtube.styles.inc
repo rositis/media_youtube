@@ -201,66 +201,6 @@ function media_youtube_styles_default_presets() {
             ),
           ),
           'presets' => array(
-            'unlinked_thumbnail' => array(
-              array(
-                'name' => 'imageStyle',
-                'settings' => array(
-                  'image_style' => 'thumbnail',
-                ),
-              ),
-              array(
-                'name' => 'thumbnail',
-                'settings' => array(),
-              ),
-            ),
-            'linked_thumbnail' => array(
-              array(
-                'name' => 'imageStyle',
-                'settings' => array(
-                  'image_style' => 'thumbnail',
-                ),
-              ),
-              array(
-                'name' => 'linkToMedia',
-                'settings' => array(),
-              ),
-              array(
-                'name' => 'thumbnail',
-                'settings' => array(),
-              ),
-            ),
-            'linked_square_thumbnail' => array(
-              array(
-                'name' => 'linkToMedia',
-                'settings' => array(),
-              ),
-              array(
-                'name' => 'imageStyle',
-                'settings' => array(
-                  'image_style' => 'square_thumbnail',
-                ),
-              ),
-              array(
-                'name' => 'thumbnail',
-                'settings' => array(),
-              ),
-            ),
-            'linked_medium' => array(
-              array(
-                'name' => 'linkToMedia',
-                'settings' => array(),
-              ),
-              array(
-                'name' => 'imageStyle',
-                'settings' => array(
-                  'image_style' => 'medium',
-                ),
-              ),
-              array(
-                'name' => 'thumbnail',
-                'settings' => array(),
-              ),
-            ),
             'video' => array(
               array(
                 'name' => 'video',
@@ -287,7 +227,11 @@ function media_youtube_styles_default_presets() {
   );
   // Allow any image style to be applied to the thumbnail.
   foreach (image_styles() as $style_name => $image_style) {
-    $presets['file']['containers']['media_youtube']['presets'][$style_name] = array(
+    $presets['file']['containers']['media_youtube']['presets']['linked_' . $style_name] = array(
+      array(
+        'name' => 'linkToMedia',
+        'settings' => array(),
+      ),
       array(
         'name' => 'imageStyle',
         'settings' => array(
@@ -299,6 +243,8 @@ function media_youtube_styles_default_presets() {
         'settings' => array(),
       ),
     );
+    $presets['file']['containers']['media_youtube']['presets']['unlinked_' . $style_name] = $presets['file']['containers']['media_youtube']['presets']['linked_' . $style_name];
+    array_shift($presets['file']['containers']['media_youtube']['presets']['unlinked_' . $style_name]);
   }
   return $presets;
 }
