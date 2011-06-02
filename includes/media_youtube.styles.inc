@@ -86,7 +86,7 @@ function media_youtube_styles_styles() {
             'youtube_preview' => array(
               'name' => 'youtube_preview',
               'effects' => array(
-                array('label' => t('Autoplay'), 'name' => 'autoplay', 'data' => array('autoplay' => 1)),
+                array('label' => t('Autoplay'), 'name' => 'autoplay', 'data' => array('autoplay' => 0)),
                 array('label' => t('Resize'), 'name' => 'resize', 'data' => array('width' => 220, 'height' => 165)),
               ),
             ),
