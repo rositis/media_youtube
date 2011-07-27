@@ -90,3 +90,11 @@ function media_youtube_update_7009() {
 function media_youtube_update_7010() {
   return array();
 }
+
+/**
+ * Add video presets based on Image styles.
+ */
+function media_youtube_update_7011() {
+  return array();
+}
+

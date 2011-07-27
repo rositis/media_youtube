@@ -246,6 +246,20 @@ function media_youtube_styles_default_presets() {
     );
     $presets['file']['containers']['media_youtube']['presets']['unlinked_' . $style_name] = $presets['file']['containers']['media_youtube']['presets']['linked_' . $style_name];
     array_shift($presets['file']['containers']['media_youtube']['presets']['unlinked_' . $style_name]);
+    foreach ($image_style['effects'] as $effect) {
+      if (in_array($effect['name'], array('image_scale', 'image_scale_and_crop', 'image_resize', 'image_crop'))) {
+        $presets['file']['containers']['media_youtube']['presets']['video_' . $style_name] = array(
+          array(
+            'name' => 'resize',
+            'settings' => $effect['data'],
+          ),
+          array(
+            'name' => 'video',
+            'settings' => array(),
+          ),
+        );
+      }
+    }
   }
   return $presets;
 }
