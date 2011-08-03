@@ -17,6 +17,7 @@ function media_youtube_install() {
  */
 function media_youtube_uninstall() {
   drupal_load('module', 'media_youtube');
+
   foreach (media_youtube_variable_default() as $variable => $value) {
     media_youtube_variable_del($variable);
   }
