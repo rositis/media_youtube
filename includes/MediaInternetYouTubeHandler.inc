@@ -16,10 +16,20 @@ class MediaInternetYouTubeHandler extends MediaInternetBaseHandler {
     );
     foreach ($patterns as $pattern) {
       preg_match($pattern, $embedCode, $matches);
-      if (isset($matches[1])) {
+      if (isset($matches[1]) && $this->valid_id($matches[1])) {
         return file_stream_wrapper_uri_normalize('youtube://v/' . $matches[1]);
       }
     }
+  }
+
+  public function valid_id($id) {
+    $url = 'http://gdata.youtube.com/feeds/api/videos/'. $id;
+    $headers = get_headers($url);
+    $valid = strpos($headers[0], '200') !== FALSE;
+    if (!$valid){
+      throw new MediaInternetValidationException(t('The video ID is invalid or the video was deleted.'));
+    }
+    return $valid;
   }
 
   public function claim($embedCode) {
