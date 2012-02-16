@@ -19,8 +19,9 @@ function media_youtube_preprocess_media_youtube_video(&$variables) {
   $variables['width'] = isset($variables['width']) ? $variables['width'] : media_youtube_variable_get('width');
   $variables['height'] = isset($variables['height']) ? $variables['height'] : media_youtube_variable_get('height');
   $variables['autoplay'] = isset($variables['autoplay']) ? $variables['autoplay'] : media_youtube_variable_get('autoplay');
-  $variables['related'] = isset($variables['related']) ? $variables['related'] : 1;
+  $variables['related'] = isset($variables['related']) ? $variables['related'] : media_youtube_variable_get('related');
   $variables['fullscreen'] = isset($variables['fullscreen']) ? $variables['fullscreen'] : media_youtube_variable_get('fullscreen');
+  $variables['wmode'] = isset($variables['wmode']) ? $variables['wmode'] : media_youtube_variable_get('wmode');
   $variables['autoplay'] = $variables['autoplay'] ? 1 : 0;
   $variables['fullscreen'] = $variables['fullscreen'] ? 'true' : 'false';
 
@@ -32,8 +33,8 @@ function media_youtube_preprocess_media_youtube_video(&$variables) {
     <object width="{$variables['width']}" height="{$variables['height']}">
       <param name="movie" value="http://www.youtube.com/v/{$variables['video_id']}"></param>
       <param name="allowFullScreen" value="{$variables['fullscreen']}"></param>
-      <param name="wmode" value="transparent" />
-      <embed src="http://www.youtube.com/v/{$variables['video_id']}" type="application/x-shockwave-flash" width="{$variables['width']}" height="{$variables['height']}" allowfullscreen="{$variables['fullscreen']}"></embed>
+      <param name="wmode" value="{$variables['wmode']}" />
+      <embed src="http://www.youtube.com/v/{$variables['video_id']}" type="application/x-shockwave-flash" width="{$variables['width']}" height="{$variables['height']}" allowfullscreen="{$variables['fullscreen']}" wmode="{$variables['wmode']}"></embed>
     </object>
 OUTPUT;
 
