@@ -27,7 +27,7 @@ class MediaInternetYouTubeHandler extends MediaInternetBaseHandler {
     $headers = get_headers($url);
     $valid = strpos($headers[0], '200') !== FALSE;
     if (!$valid){
-      throw new MediaInternetValidationException(t('The video ID is invalid or the video was deleted.'));
+      throw new MediaInternetValidationException(t('The YouTube video ID is invalid or the video was deleted.'));
     }
     return $valid;
   }
