@@ -24,12 +24,11 @@ class MediaInternetYouTubeHandler extends MediaInternetBaseHandler {
 
   public function valid_id($id) {
     $url = 'http://gdata.youtube.com/feeds/api/videos/'. $id;
-    $headers = get_headers($url);
-    $valid = strpos($headers[0], '200') !== FALSE;
-    if (!$valid) {
+    $response = drupal_http_request($url, array('method' => 'HEAD'));
+    if ($response->code != 200) {
       throw new MediaInternetValidationException(t('The YouTube video ID is invalid or the video was deleted.'));
     }
-    return $valid;
+    return TRUE;
   }
 
   public function claim($embedCode) {
