@@ -39,7 +39,13 @@ class MediaInternetYouTubeHandler extends MediaInternetBaseHandler {
 
   public function getFileObject() {
     $uri = $this->parse($this->embedCode);
-    return file_uri_to_object($uri, TRUE);
+    $file = file_uri_to_object($uri, TRUE);
+
+    if (empty($file->fid) && $info = $this->getOEmbed()) {
+      $file->filename = truncate_utf8($info['title'], 255);
+    }
+
+    return $file;
   }
 
   /**
