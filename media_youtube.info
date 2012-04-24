@@ -6,6 +6,7 @@ core = 7.x
 files[] = media_youtube.module
 files[] = includes/MediaInternetYouTubeHandler.inc
 files[] = includes/MediaYouTubeStreamWrapper.inc
+files[] = includes/MediaYouTubeBrowser.inc
 files[] = includes/MediaYouTubeStyles.inc
 files[] = includes/media_youtube.formatters.inc
 files[] = includes/media_youtube.styles.inc
