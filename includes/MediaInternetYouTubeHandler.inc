@@ -24,10 +24,7 @@ class MediaInternetYouTubeHandler extends MediaInternetBaseHandler {
   }
 
   public function valid_id($id) {
-    $url = MEDIA_YOUTUBE_REST_API . '/' . $id;
-    $response = drupal_http_request($url, array('method' => 'HEAD'));
-    if ($response->code != 200) {
-            dpm( $response);
+    if (!media_youtube_valid_id($id)) {
       throw new MediaInternetValidationException(t('The YouTube video ID (@id) is invalid or the video was deleted.', array('@id' => $id)));
     }
     return TRUE;
