@@ -19,7 +19,7 @@
       });
 
       // Catch the click on a media item
-      $('.media-item').bind('click', function () {
+      $('#media-youtube-add .media-item').bind('click', function () {
         // Remove all currently selected files
         $('.media-item').removeClass('selected');
         // Set the current item to active
