@@ -92,7 +92,7 @@ function media_youtube_variable_del($name) {
  *
  * @param string $name
  *  Optional variable name to retrieve the default. Note that it has not yet
- *  been pre-pended with the MEDIA_YOUTUBE_NAMESPACE namespace at this time.
+ *  been prepended with the MEDIA_YOUTUBE_NAMESPACE namespace at this time.
  * @return unknown
  *  The default value of this variable, if it's been set, or NULL, unless
  *  $name is NULL, in which case we return an array of all default values.
@@ -106,20 +106,20 @@ function media_youtube_variable_default($name = NULL) {
 
   if (!isset($defaults)) {
     $defaults = array(
-      'width' => 560,
-      'height' =>340,
+      'width' => 640,
+      'height' => 360,
+      'autohide' => 2,
       'autoplay' => FALSE,
-      'related' => TRUE,
-      'hd' => FALSE,
-      'showsearch' => TRUE,
+      'color' => 'red',
+      'controls' => TRUE,
+      'enablejsapi' => FALSE,
+      'loop' => FALSE,
       'modestbranding' => FALSE,
-      'showinfo'=> TRUE,
-      'version' => 3,
+      'nocookie' => FALSE,
+      'origin' => '',
+      'rel' => TRUE,
+      'showinfo' => TRUE,
       'theme' => 'dark',
-      'fullscreen' => TRUE,
-      'wmode' => 'transparent',
-      'chromeless' => FALSE,
-      'preview_uri' => 'youtube://v/-jubiv7QUco',
     );
   }
 

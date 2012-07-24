@@ -10,103 +10,89 @@
  * Preprocess function for theme('media_youtube_video').
  */
 function media_youtube_preprocess_media_youtube_video(&$variables) {
-  // Build the URL for display.
-  $uri = $variables['uri'];
-  $wrapper = file_stream_wrapper_get_instance_by_uri($uri);
+
+  // Build the URI.
+  $wrapper = file_stream_wrapper_get_instance_by_uri($variables['uri']);
   $parts = $wrapper->get_parameters();
   $variables['video_id'] = check_plain($parts['v']);
-  $variables['query'] = array();
 
-  // @see http://code.google.com/apis/youtube/player_parameters.html
-  foreach (array('width', 'height', 'autoplay', 'related', 'hd', 'showsearch', 'modestbranding', 'showinfo', 'version', 'theme', 'fullscreen', 'wmode', 'chromeless') as $option) {
-    // Set the option, either from the options array, or from the default value.
-    $variables[$option] = isset($variables[$option]) ? $variables[$option] : (isset($variables['options'][$option]) ? $variables['options'][$option] : media_youtube_variable_get($option));
-  }
+  // Parse options and build the query string. Only add the option to the query
+  // array if the option value is not default. Be careful, depending on the
+  // wording in media_youtube.formatters.inc, TRUE may be query=0.
+  // @see https://developers.google.com/youtube/player_parameters#Parameters
+  $query = array();
 
-  // We have to set fullscreen in the url query and as a parameter to the flash.
-  $variables['fs'] = $variables['fullscreen'];
-  $variables['fullscreen'] = $variables['fullscreen'] ? 'true' : 'false';
-
-  $variables['wrapper_id'] = 'media_youtube_' . $variables['video_id'] . '_' . $variables['id'];
-
-  // Pass the settings to replace the object tag with an iframe.
-  $settings = array(
-    'media_youtube' => array(
-      $variables['wrapper_id'] => array(
-        'width' => $variables['width'],
-        'height' => $variables['height'],
-        'video_id' => $variables['video_id'],
-        'fullscreen' => $variables['fullscreen'],
-        'id' => $variables['wrapper_id'] .'_iframe',
-      ),
-    ),
-  );
-
-  // Set the version of the youtube api player.
-  if ($variables['version']) {
-    $variables['query']['version'] = $variables['version'];
-    // Note that the fs variable defaults to 1 with the AS3 player.
-    if (!$variables['fs']) {
-      $variables['query']['fs'] = 0;
+  // Make css z-index work with flash object. Must be the first parameter.
+  $query['wmode'] = 'opaque';
+  
+  // These queries default to 0. If the option is true, set value to 1.
+  foreach (array('autoplay', 'enablejsapi', 'loop', 'modestbranding') as $option) {
+    if ($variables['options'][$option]) {
+      $query[$option] = 1;
     }
   }
-  else if ($variables['fs']) {
-    // Note that the fs variable defaults to 0 with the AS2 player.
-    $variables['query']['fs'] = 1;
+
+  // Currently, loop only works with a playlist. Make fake playlist out of a
+  // single video.
+  // @see https://developers.google.com/youtube/player_parameters#loop
+  if ($variables['options']['loop']) {
+    $query['playlist'] = $variables['video_id'];
   }
 
-  // These options default to 0.
-  foreach (array('modestbranding', 'autoplay', 'hd') as $variable) {
-    if ($variables[$variable]) {
-      $variables['query'][$variable] = 1;
+  // These queries default to 1. If the option is false, set value to 0.
+  foreach (array('rel', 'showinfo') as $option) {
+    if (!$variables['options'][$option]) {
+      $query[$option] = 0;
     }
   }
-  // These options default to 1.
-  foreach (array('showsearch', 'showinfo') as $variable) {
-    if (!$variables[$variable]) {
-      $variables['query'][$variable] = 0;
-    }
-  }
-  if (!$variables['related']) {
-    $variables['query']['rel'] = 0;
-  }
-  if ($variables['theme'] != 'dark') {
-    $variables['query']['theme'] = $variables['theme'];
-  }
 
-  // Ensure that we pass the required query variables to the Iframe settings.
-  if (!empty($variables['query'])) {
-    $settings['media_youtube'][$variables['wrapper_id']]['options'] = $variables['query'];
+  // These queries default to 1. Option wording is reversed, so if the option
+  // is true, set value to 0.
+  if ($variables['options']['controls']) {
+    $query['controls'] = 0;
   }
-
-  drupal_add_js($settings, 'setting');
-  drupal_add_js(drupal_get_path('module', 'media_youtube') . '/js/media_youtube.js');
-  drupal_add_css(drupal_get_path('module', 'media_youtube') . '/css/media_youtube.css');
-  drupal_add_js(drupal_get_path('module', 'media_youtube') . '/js/flash_detect_min.js');
-
-  // The chromeless player requires a different url.
-  if ($variables['chromeless']) {
-    $variables['url_api'] = 'apiplayer';
-    $variables['query']['video_id'] = $variables['video_id'];
+  // Reverse the reversed option so that it makes sense in the tpl.
+  if ($variables['options']['controls'] = 1) {
+    $variables['options']['controls'] = 0;
   }
   else {
-    $variables['url_api'] = 'v/' . $variables['video_id'];
+    $variables['options']['controls'] = 1;
   }
 
-  $variables['url'] = url('http://www.youtube.com/' . $variables['url_api'], array('query' => $variables['query'], 'external' => TRUE, 'https' => TRUE));
+  // Strings.
+  if ($variables['options']['theme'] != 'dark') {
+    $query['theme'] = $variables['options']['theme'];
+  }
+  if ($variables['options']['color'] != 'red') {
+    $query['color'] = $variables['options']['color'];
+  }
+  if ($variables['options']['autohide'] != '2') {
+    $query['autohide'] = $variables['options']['autohide'];
+  }
 
-  // For users with JavaScript, these object and embed tags will be replaced
-  // by an iframe, so that we can support users without Flash.
-  $variables['output'] = <<<OUTPUT
-    <object width="{$variables['width']}" height="{$variables['height']}">
-      <param name="movie" value="{$variables['url']}"></param>
-      <param name="allowFullScreen" value="{$variables['fullscreen']}"></param>
-      <param name="wmode" value="{$variables['wmode']}" />
-      <embed src="{$variables['url']}" type="application/x-shockwave-flash" width="{$variables['width']}" height="{$variables['height']}" allowfullscreen="{$variables['fullscreen']}" wmode="{$variables['wmode']}"></embed>
-    </object>
-OUTPUT;
+  // Non-query options.
+  if ($variables['options']['nocookie']) {
+    $url_base = 'youtube-nocookie.com';
+  }
+  else {
+    $url_base = 'youtube.com';
+  }
+
+  // Add some options as their own template variables.
+  foreach (array('width', 'height') as $themevar) {
+    $variables[$themevar] = $variables['options'][$themevar];
+  }
+
+  // Build the iframe URL with options query string.
+  // Use https as default protocol instead of relative protocol to maintain
+  // compatibility with content emails, rss, and https sites.
+  // @see http://drupal.org/node/1368818
+  $variables['url'] = url('https://www.' . $url_base . '/embed/' . $variables['video_id'], array('query' => $query, 'external' => TRUE, 'https' => TRUE));
 }
 
+/**
+ * Styles
+ */
 function theme_media_youtube_field_formatter_styles($variables) {
   $element = $variables['element'];
   $style = $variables['style'];
