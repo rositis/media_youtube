@@ -16,7 +16,7 @@ function media_youtube_file_formatter_info() {
     'settings callback' => 'media_youtube_file_formatter_video_settings',
   );
 
-  foreach (array('width', 'height', 'autohide', 'autoplay', 'color', 'controls', 'enablejsapi', 'loop', 'modestbranding', 'nocookie', 'origin', 'rel', 'showinfo','theme') as $setting) {
+  foreach (array('width', 'height', 'autohide', 'autoplay', 'color', 'controls', 'enablejsapi', 'loop', 'modestbranding', 'nocookie', 'origin', 'rel', 'showinfo', 'theme') as $setting) {
     $formatters['media_youtube_video']['default settings'][$setting] = media_youtube_variable_get($setting);
   }
 

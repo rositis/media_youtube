@@ -14,7 +14,7 @@ function media_youtube_styles_register() {
       'field_types' => 'file',
       'name' => t('MediaYouTube'),
       'description' => t('Media YouTube styles.'),
-      'path' => drupal_get_path('module', 'media_youtube') .'/includes',
+      'path' => drupal_get_path('module', 'media_youtube') . '/includes',
       'file' => 'media_youtube.styles.inc',
     ),
   );

@@ -22,7 +22,7 @@ class MediaYouTubeStreamWrapper extends MediaReadOnlyStreamWrapper {
 
   function getOriginalThumbnailPath() {
     $parts = $this->get_parameters();
-    return 'http://img.youtube.com/vi/'. check_plain($parts['v']) .'/0.jpg';
+    return 'http://img.youtube.com/vi/' . check_plain($parts['v']) . '/0.jpg';
   }
 
   function getLocalThumbnailPath() {
