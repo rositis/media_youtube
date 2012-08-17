@@ -62,11 +62,13 @@ function media_youtube_file_formatter_video_settings($form, &$form_state, $setti
     '#title' => t('Width'),
     '#type' => 'textfield',
     '#default_value' => $settings['width'],
+    '#element_validate' => array('_youtube_validate_video_width_and_height'), 
   );
   $element['height'] = array(
     '#title' => t('Height'),
     '#type' => 'textfield',
     '#default_value' => $settings['height'],
+    '#element_validate' => array('_youtube_validate_video_width_and_height'), 
   );
 
   // @see https://developers.google.com/youtube/player_parameters#Parameters
@@ -81,7 +83,6 @@ function media_youtube_file_formatter_video_settings($form, &$form_state, $setti
     ),
     '#default_value' => $settings['theme'],
   );
-
   $element['color'] = array(
     '#title' => t('Progress bar color'),
     '#type' => 'radios',
@@ -91,7 +92,6 @@ function media_youtube_file_formatter_video_settings($form, &$form_state, $setti
     ),
     '#default_value' => $settings['color'],
   );
-
   $element['autohide'] = array(
     '#title' => t('Controls during playback'),
     '#type' => 'radios',
@@ -109,7 +109,6 @@ function media_youtube_file_formatter_video_settings($form, &$form_state, $setti
     '#type' => 'checkbox',
     '#default_value' => $settings['autoplay'],
   );
-
   $element['loop'] = array(
     '#title' => t('Loop video'),
     '#type' => 'checkbox',
@@ -123,25 +122,21 @@ function media_youtube_file_formatter_video_settings($form, &$form_state, $setti
     '#type' => 'checkbox',
     '#default_value' => $settings['controls'],
   );
-
   $element['showinfo'] = array(
     '#title' => t('Display video title and uploader'),
     '#type' => 'checkbox',
     '#default_value' => $settings['showinfo'],
   );
-
   $element['modestbranding'] = array(
     '#title' => t('Remove YouTube logo from the control bar'),
     '#type' => 'checkbox',
     '#default_value' => $settings['modestbranding'],
   );
-
   $element['rel'] = array(
     '#title' => t('Show related videos when playback ends'),
     '#type' => 'checkbox',
     '#default_value' => $settings['rel'],
   );
-
   $element['nocookie'] = array(
     '#title' => t('Use privacy enhanced (no cookie) mode'),
     '#type' => 'checkbox',
@@ -154,15 +149,42 @@ function media_youtube_file_formatter_video_settings($form, &$form_state, $setti
     '#type' => 'checkbox',
     '#default_value' => $settings['enablejsapi'],
   );
-
   $element['origin'] = array(
     '#title' => t('Origin'),
     '#type' => 'textfield',
     '#description' => t('If the Javascript API is enabled, enter your site\'s domain for added security'),
     '#default_value' => $settings['origin'],
+    '#states' => array(
+      'invisible' => array(
+        ':input[name="displays[media_youtube_video][settings][enablejsapi]"]' => array('checked' => FALSE),
+      ),
+    ),
+    '#element_validate' => array('_youtube_validate_jsapi_domain'), 
   );
-
+  
   return $element;
+}
+
+/**
+ * Validation for width and height.
+ */
+function _youtube_validate_video_width_and_height($element, &$form_state, $form) {
+
+  // Check if the value is a number with an optional decimal or percentage sign, or "auto".
+  if (!empty($element['#value']) && !preg_match('/^(auto|([0-9]*(\.[0-9]+)?%?))$/', $element['#value'])) {
+    form_error($element, t("The value entered for @dimension is invalid. Please insert a unitless integer for pixels, a percent, or \"auto\". Note that percent and auto may not function correctly depending on the browser and doctype.", array('@dimension' => $element['#title'])));
+  }  
+}
+
+/**
+ * Validation for Js API Origin.
+ */
+function _youtube_validate_jsapi_domain ($element, &$form_state, $form) {
+
+  // Check if the value is a url with http/s and no trailing directories.
+  if (!empty($element['#value']) && !preg_match('/^https?\:\/\/[a-zA-Z0-9\-\.]+\.([a-zA-Z]{2,4}){1,2}$/', $element['#value'])) {
+    form_error($element, t('Please insert a valid domain in the format http://www.yourdomain.com'));
+  }  
 }
 
 /**

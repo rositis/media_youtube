@@ -24,7 +24,7 @@ function media_youtube_preprocess_media_youtube_video(&$variables) {
 
   // Make css z-index work with flash object. Must be the first parameter.
   $query['wmode'] = 'opaque';
-  
+
   // These queries default to 0. If the option is true, set value to 1.
   foreach (array('autoplay', 'enablejsapi', 'loop', 'modestbranding') as $option) {
     if ($variables['options'][$option]) {
