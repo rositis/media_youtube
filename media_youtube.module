@@ -103,8 +103,10 @@ function media_youtube_media_parse($embed_code) {
  * Implements hook_media_format_form_prepare_alter().
  */
 function media_youtube_media_format_form_prepare_alter(&$form, &$form_state, $media) {
-  $settings = array('autosubmit' => ($media->type == "video"));
-  drupal_add_js(array('media_format_form' => $settings), 'setting');
+  if ($form['#media']->filemime == 'video/youtube') {
+    $settings = array('autosubmit' => TRUE);
+    drupal_add_js(array('media_format_form' => $settings), 'setting');
+  }
 }
 
 /**
