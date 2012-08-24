@@ -11,6 +11,8 @@
  *  $id - The file entity ID (fid).
  *  $url - The full url including query options for the Youtube iframe.
  *  $options - An array containing the Media Youtube formatter options.
+ *  $api_id_attribute - An id attribute if the Javascript API is enabled; 
+ *  otherwise NULL.
  *  $width - The width value set in Media: Youtube file display options.
  *  $height - The height value set in Media: Youtube file display options.
  *
@@ -18,5 +20,5 @@
 
 ?>
 <div class="<?php print $classes; ?> media-youtube-<?php print $id; ?>">
-  <iframe class="media-youtube-player" width="<?php print $width; ?>" height="<?php print $height; ?>" src="<?php print $variables['url']; ?>" frameborder="0" allowfullscreen></iframe>
+  <iframe class="media-youtube-player" <?php print $api_id_attribute; ?>width="<?php print $width; ?>" height="<?php print $height; ?>" src="<?php print $variables['url']; ?>" frameborder="0" allowfullscreen></iframe>
 </div>

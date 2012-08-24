@@ -31,6 +31,14 @@ function media_youtube_preprocess_media_youtube_video(&$variables) {
       $query[$option] = 1;
     }
   }
+  // Add a query ID and identical html ID if js API is set.
+  if ($variables['options']['enablejsapi']) {
+    $query['playerapiid'] = drupal_html_id('media-youtube-' . $variables['video_id']);
+    $variables['api_id_attribute'] = 'id="' . $query['playerapiid'] . '" ';
+  }
+  else {
+    $variables['api_id_attribute'] = NULL;
+  }
 
   // Currently, loop only works with a playlist. Make fake playlist out of a
   // single video.

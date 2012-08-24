@@ -148,6 +148,7 @@ function media_youtube_file_formatter_video_settings($form, &$form_state, $setti
     '#title' => t('Enable the <a href="https://developers.google.com/youtube/js_api_reference">Javascript API</a>'),
     '#type' => 'checkbox',
     '#default_value' => $settings['enablejsapi'],
+    '#description' => 'An id in the format <code>media-youtube-{video_id}</code> will be added to each iframe.',
   );
   $element['origin'] = array(
     '#title' => t('Origin'),
