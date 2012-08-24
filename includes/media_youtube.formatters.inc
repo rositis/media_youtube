@@ -201,6 +201,7 @@ function media_youtube_file_formatter_image_view($file, $display, $langcode) {
       $element = array(
         '#theme' => 'image',
         '#path' => $wrapper->getOriginalThumbnailPath(),
+        '#alt' => $file->filename,
       );
     }
     else {
@@ -208,6 +209,7 @@ function media_youtube_file_formatter_image_view($file, $display, $langcode) {
         '#theme' => 'image_style',
         '#style_name' => $image_style,
         '#path' => $wrapper->getLocalThumbnailPath(),
+        '#alt' => $file->filename,
       );
     }
     return $element;
