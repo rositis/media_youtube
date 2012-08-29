@@ -31,10 +31,13 @@ function media_youtube_preprocess_media_youtube_video(&$variables) {
       $query[$option] = 1;
     }
   }
-  // Add a query ID and identical html ID if js API is set.
   if ($variables['options']['enablejsapi']) {
+    // Add a query ID and identical html ID if js API is set.
     $query['playerapiid'] = drupal_html_id('media-youtube-' . $variables['video_id']);
     $variables['api_id_attribute'] = 'id="' . $query['playerapiid'] . '" ';
+
+    //Add the origin for improved security
+    $variables['options']['origin'] ? $query['origin'] = $variables['options']['origin'] : '';
   }
   else {
     $variables['api_id_attribute'] = NULL;
