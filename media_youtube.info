@@ -11,4 +11,4 @@ files[] = includes/MediaYouTubeStyles.inc
 files[] = includes/media_youtube.formatters.inc
 files[] = includes/media_youtube.styles.inc
 files[] = includes/media_youtube.variables.inc
-dependencies[] = media_internet
+dependencies[] = media
