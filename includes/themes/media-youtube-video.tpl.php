@@ -20,5 +20,5 @@
 
 ?>
 <div class="<?php print $classes; ?> media-youtube-<?php print $id; ?>">
-  <iframe class="media-youtube-player" <?php print $api_id_attribute; ?>width="<?php print $width; ?>" height="<?php print $height; ?>" src="<?php print $variables['url']; ?>" frameborder="0" allowfullscreen></iframe>
+  <iframe class="media-youtube-player" <?php print $api_id_attribute; ?>width="<?php print $width; ?>" height="<?php print $height; ?>" src="<?php print $url; ?>" frameborder="0" allowfullscreen></iframe>
 </div>
