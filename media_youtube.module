@@ -133,7 +133,9 @@ function media_youtube_add($form, &$form_state = array()) {
     // Reset the pager when we press apply.
     $page = 0;
   }
-  $search = media_youtube_video_search(array('q' => $term, 'max-results' => 12, 'start-index' => $page * 12 + 1));
+  if (!empty($term)) {
+    $search = media_youtube_video_search(array('q' => $term, 'max-results' => 12, 'start-index' => $page * 12 + 1));
+  }
   $form['videos']['#prefix'] = '<div id="container"><div id="scrollbox"><ul id="media-browser-library-list" class="media-list-thumbnails">';
   $form['videos']['#suffix'] = '</ul><div id="status"></div></div></div>';
 
