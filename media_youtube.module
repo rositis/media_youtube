@@ -16,14 +16,6 @@
 // A registry of variable_get defaults.
 include_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'media_youtube') . '/includes/media_youtube.variables.inc';
 
-// Hooks and callbacks for integrating with Styles module for display.
-// @todo Can save a little overhead for people without Styles module by wrapping
-//   this inside a module_exists('styles'). However, is that safe to do in
-//   global context? If not, is there any down side to doing it in hook_init()?
-// @todo: Styles integration is no longer recommended. We can just take out all
-//   Styles module code.
-include_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'media_youtube') . '/includes/media_youtube.styles.inc';
-
 // Hooks and callbacks for integrating with File Entity module for display.
 include_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'media_youtube') . '/includes/media_youtube.formatters.inc';
 
@@ -58,31 +50,11 @@ function media_youtube_stream_wrappers() {
  */
 function media_youtube_theme($existing, $type, $theme, $path) {
   return array(
-    'media_youtube_preview_style' => array(
-      'variables' => array('style_name' => NULL),
-      'file' => 'media_youtube.theme.inc',
-      'path' => $path . '/includes/themes',
-    ),
-    'media_youtube_field_formatter_styles' => array(
-      'variables' => array('element' => NULL, 'style' => NULL),
-      'file' => 'media_youtube.theme.inc',
-      'path' => $path . '/includes/themes',
-    ),
     'media_youtube_video' => array(
       'variables' => array('uri' => NULL, 'options' => array()),
       'file' => 'media_youtube.theme.inc',
       'path' => $path . '/includes/themes',
       'template' => 'media-youtube-video',
-    ),
-    'media_youtube_embed' => array(
-      'variables' => array('style_name' => NULL, 'uri' => NULL, 'alt' => NULL, 'title' => NULL),
-      'file' => 'media_youtube.theme.inc',
-      'path' => $path . '/includes/themes',
-    ),
-    'media_youtube_styles' => array(
-      'variables' => array('element' => NULL, 'style' => NULL),
-      'file' => 'media_youtube.theme.inc',
-      'path' => $path . '/includes/themes',
     ),
   );
 }
@@ -134,7 +106,6 @@ function media_youtube_media_browser_plugin_info() {
 
   return $info;
 }
-
 
 /**
  * Provides a form for adding media items from YouTube search.
@@ -257,7 +228,6 @@ function media_youtube_add($form, &$form_state = array()) {
   );
   return $form;
 }
-
 
 /**
  * Allow stream wrappers to have their chance at validation.
