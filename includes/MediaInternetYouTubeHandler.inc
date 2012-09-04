@@ -64,7 +64,16 @@ class MediaInternetYouTubeHandler extends MediaInternetBaseHandler {
     $rss_url = url('http://gdata.youtube.com/feeds/api/videos/' . $video_id, array('query' => array('v' => '2')));
     // @todo Use media_retrieve_xml() once it's upgraded to include elements
     //   from all namespaces, not just the document default namespace.
-    $entry = simplexml_load_file($rss_url);
+    $request = drupal_http_request($rss_url);
+    if (!isset($request->error)) {
+      $entry = simplexml_load_string($request->data);
+    }
+    else {
+      throw new Exception("Error Processing Request: '{$request->error}' (code:'{$response->code}'");
+
+      //if request wasn't successful, create object for return to avoid errors
+      $entry = new SimpleXMLElement();
+    }
     return $entry;
   }
 
@@ -83,6 +92,10 @@ class MediaInternetYouTubeHandler extends MediaInternetBaseHandler {
     $response = drupal_http_request($oembed_url);
     if (!isset($response->error)) {
       return drupal_json_decode($response->data);
+    }
+    else {
+      throw new Exception("Error Processing Request. Error message: '{$response->error}' (code:'{$response->code}')");
+      return;
     }
   }
 }
