@@ -10,3 +10,4 @@ files[] = includes/MediaYouTubeBrowser.inc
 files[] = includes/media_youtube.formatters.inc
 files[] = includes/media_youtube.variables.inc
 dependencies[] = media
+dependencies[] = media_internet
