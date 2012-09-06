@@ -89,14 +89,18 @@ function media_youtube_preprocess_media_youtube_video(&$variables) {
     $url_base = 'youtube.com';
   }
 
+  if ($variables['options']['protocol_specify']) {
+    $protocol = $variables['options']['protocol'];
+  }
+  else {
+    $protocol = '';
+  }
+
   // Add some options as their own template variables.
   foreach (array('width', 'height') as $themevar) {
     $variables[$themevar] = $variables['options'][$themevar];
   }
 
   // Build the iframe URL with options query string.
-  // Use https as default protocol instead of relative protocol to maintain
-  // compatibility with content emails, rss, and https sites.
-  // @see http://drupal.org/node/1368818
-  $variables['url'] = url('https://www.' . $url_base . '/embed/' . $variables['video_id'], array('query' => $query, 'external' => TRUE, 'https' => TRUE));
+  $variables['url'] = url($protocol . '//www.' . $url_base . '/embed/' . $variables['video_id'], array('query' => $query, 'external' => TRUE));
 }
