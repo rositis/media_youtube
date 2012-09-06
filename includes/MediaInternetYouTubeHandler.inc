@@ -6,6 +6,21 @@
  * @see hook_media_internet_providers().
  */
 class MediaInternetYouTubeHandler extends MediaInternetBaseHandler {
+  /**
+   * Check if a YouTube video id is valid.
+   *
+   * @return
+   *   Boolean.
+   */
+  static public function valid_id($id) {
+    $url = 'http://gdata.youtube.com/feeds/api/videos/'. $id;
+    $response = drupal_http_request($url, array('method' => 'HEAD'));
+    if ($response->code != 200) {
+      throw new MediaInternetValidationException(t('The YouTube video ID is invalid or the video was deleted.'));
+    }
+    return TRUE;
+  }
+
   public function parse($embedCode) {
     $patterns = array(
       '@youtube\.com/watch[#\?].*?v=([^"\& ]+)@i',
@@ -17,17 +32,10 @@ class MediaInternetYouTubeHandler extends MediaInternetBaseHandler {
     );
     foreach ($patterns as $pattern) {
       preg_match($pattern, $embedCode, $matches);
-      if (isset($matches[1]) && $this->valid_id($matches[1])) {
+      if (isset($matches[1]) && self::valid_id($matches[1])) {
         return file_stream_wrapper_uri_normalize('youtube://v/' . $matches[1]);
       }
     }
-  }
-
-  public function valid_id($id) {
-    if (!media_youtube_valid_id($id)) {
-      throw new MediaInternetValidationException(t('The YouTube video ID (@id) is invalid or the video was deleted.', array('@id' => $id)));
-    }
-    return TRUE;
   }
 
   public function claim($embedCode) {
@@ -64,7 +72,7 @@ class MediaInternetYouTubeHandler extends MediaInternetBaseHandler {
     $rss_url = url('http://gdata.youtube.com/feeds/api/videos/' . $video_id, array('query' => array('v' => '2')));
     // @todo Use media_retrieve_xml() once it's upgraded to include elements
     //   from all namespaces, not just the document default namespace.
-    $request = drupal_http_request($rss_url);
+  s  $request = drupal_http_request($rss_url);
     if (!isset($request->error)) {
       $entry = simplexml_load_string($request->data);
     }
