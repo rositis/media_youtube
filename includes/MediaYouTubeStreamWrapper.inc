@@ -7,7 +7,7 @@
 
 /**
  *  Create an instance like this:
- *  $youtube = new ResourceYouTubeStreamWrapper('youtube://?v=[video-code]');
+ *  $youtube = new MediaYouTubeStreamWrapper('youtube://v/[video-code]');
  */
 class MediaYouTubeStreamWrapper extends MediaReadOnlyStreamWrapper {
   static function getMimeType($uri, $mapping = NULL) {
