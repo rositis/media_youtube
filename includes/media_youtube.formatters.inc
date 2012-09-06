@@ -255,28 +255,39 @@ function media_youtube_file_formatter_image_settings($form, &$form_state, $setti
  * Implements hook_file_default_displays().
  */
 function media_youtube_file_default_displays() {
-  $default_displays = array();
 
   // Default settings for displaying as a video.
-  $default_video_settings = array(
+  $default_displays = array();
 
-  // @todo: Remove Large, rewrite default displays once
-  // http://drupal.org/node/1051090 goes through.
-    'media_large' => array(
+  $default_video_settings = array(
+    'teaser' => array(
       'width' => 560,
-      'height' => 315,
+      'height' => 340,
       'autoplay' => FALSE,
     ),
-
+    'full' => array(
+      'width' => 640,
+      'height' => 390,
+    ),
+    // Legacy view modes included to support older versions of Media,
+    // before #1051090 went through. They do no harm and can sit here
+    // until there is a Media 2.x stable.
+    // @TODO: Remove when Media 2.0 is released.
+    'media_large' => array(
+      'width' => 560,
+      'height' => 340,
+      'autoplay' => FALSE,
+    ),
     'media_original' => array(
       'width' => 640,
-      'height' => 360,
+      'height' => 390,
       'autoplay' => media_youtube_variable_get('autoplay'),
     ),
   );
   foreach ($default_video_settings as $view_mode => $settings) {
     $display_name = 'video__' . $view_mode . '__media_youtube_video';
     $default_displays[$display_name] = (object) array(
+      'api_version' => 1,
       'name' => $display_name,
       'status' => 1,
       'weight' => 1,
@@ -284,19 +295,24 @@ function media_youtube_file_default_displays() {
     );
   }
 
-  // Default settings for displaying a video preview image. We enable preview
-  // images even for view modes that also play video, for use inside a running
-  // WYSIWYG editor. The higher weight ensures that the video display is used
-  // where possible.
+  // Default settings for displaying a video preview image.
+  // @TODO: Check if the following is still true:
+  // We enable preview images even for view modes that also play video,
+  // for use inside a running WYSIWYG editor. The higher weight ensures
+  // that the video display is used where possible.
   $default_image_styles = array(
+    'preview' => 'square_thumbnail',
+    'teaser' => 'large',
+    'full' => 'large',
+    // Legacy view modes, see note above.
     'media_preview' => 'square_thumbnail',
     'media_large' => 'large',
-    'media_original' => ''
+    'media_original' => '',
   );
   foreach ($default_image_styles as $view_mode => $image_style) {
     $display_name = 'video__' . $view_mode . '__media_youtube_image';
     $default_displays[$display_name] = (object) array(
-    //      'api_version' => 1,
+      'api_version' => 1,
       'name' => $display_name,
       'status' => 1,
       'weight' => 2,

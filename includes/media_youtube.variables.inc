@@ -107,7 +107,7 @@ function media_youtube_variable_default($name = NULL) {
   if (!isset($defaults)) {
     $defaults = array(
       'width' => 640,
-      'height' => 360,
+      'height' => 390,
       'autohide' => 2,
       'autoplay' => FALSE,
       'color' => 'red',
