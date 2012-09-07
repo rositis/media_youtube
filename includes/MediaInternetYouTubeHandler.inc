@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * @file
+ * Contains MediaInternetYouTubeHandler.
+ */
+
+/**
  * Implementation of MediaInternetBaseHandler.
  *
  * @see hook_media_internet_providers().
