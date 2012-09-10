@@ -77,7 +77,7 @@ class MediaInternetYouTubeHandler extends MediaInternetBaseHandler {
     $rss_url = url('http://gdata.youtube.com/feeds/api/videos/' . $video_id, array('query' => array('v' => '2')));
     // @todo Use media_retrieve_xml() once it's upgraded to include elements
     //   from all namespaces, not just the document default namespace.
-  s  $request = drupal_http_request($rss_url);
+    $request = drupal_http_request($rss_url);
     if (!isset($request->error)) {
       $entry = simplexml_load_string($request->data);
     }
