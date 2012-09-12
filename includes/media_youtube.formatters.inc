@@ -260,14 +260,14 @@ function media_youtube_file_default_displays() {
   $default_displays = array();
 
   $default_video_settings = array(
+    'default' => array(
+      'width' => 640,
+      'height' => 390,
+    ),
     'teaser' => array(
       'width' => 560,
       'height' => 340,
       'autoplay' => FALSE,
-    ),
-    'full' => array(
-      'width' => 640,
-      'height' => 390,
     ),
     // Legacy view modes included to support older versions of Media,
     // before #1051090 went through. They do no harm and can sit here
@@ -296,14 +296,14 @@ function media_youtube_file_default_displays() {
   }
 
   // Default settings for displaying a video preview image.
-  // @TODO: Check if the following is still true:
-  // We enable preview images even for view modes that also play video,
-  // for use inside a running WYSIWYG editor. The higher weight ensures
-  // that the video display is used where possible.
+  // We enable preview images even for view modes that also play video
+  // for use inside a running WYSIWYG editor. We weight them so video 
+  // formatters come first in the cascade to make sure the video formatter
+  // is used whenever possible.
   $default_image_styles = array(
+    'default' => 'large',
     'preview' => 'square_thumbnail',
     'teaser' => 'large',
-    'full' => 'large',
     // Legacy view modes, see note above.
     'media_preview' => 'square_thumbnail',
     'media_large' => 'large',
