@@ -10,6 +10,23 @@
  *  $youtube = new MediaYouTubeStreamWrapper('youtube://v/[video-code]');
  */
 class MediaYouTubeStreamWrapper extends MediaReadOnlyStreamWrapper {
+
+  // Overrides $base_url defined in MediaReadOnlyStreamWrapper.
+  protected $base_url = 'http://youtube.com/watch';
+
+  /**
+   * Returns a url in the format "http://youtube.com/watch?v=qsPQN4MiTeE".
+   *
+   * Overrides interpolateUrl() defined in MediaReadOnlyStreamWrapper.
+   * This is an exact copy of the function in MediaReadOnlyStreamWrapper,
+   * here in case that example is redefined or removed.
+   */
+  function interpolateUrl() {
+    if ($parameters = $this->get_parameters()) {
+      return $this->base_url . '?' . http_build_query($parameters);
+    }
+  }
+
   static function getMimeType($uri, $mapping = NULL) {
     return 'video/youtube';
   }

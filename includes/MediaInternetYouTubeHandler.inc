@@ -100,7 +100,7 @@ class MediaInternetYouTubeHandler extends MediaInternetBaseHandler {
    */
   public function getOEmbed() {
     $uri = $this->parse($this->embedCode);
-    $external_url = drupal_realpath($uri);
+    $external_url = file_create_url($uri);
     $oembed_url = url('http://www.youtube.com/oembed', array('query' => array('url' => $external_url, 'format' => 'json')));
     $response = drupal_http_request($oembed_url);
     if (!isset($response->error)) {
