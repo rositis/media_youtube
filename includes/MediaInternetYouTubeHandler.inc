@@ -14,14 +14,17 @@ class MediaInternetYouTubeHandler extends MediaInternetBaseHandler {
   /**
    * Check if a YouTube video id is valid.
    *
+   * Check against the oembed stream instead of the gdata api site to
+   * avoid "yt:quota too_many_recent_calls" errors.
+   *
    * @return
    *   Boolean.
    */
-  static public function valid_id($id) {
-    $url = 'http://gdata.youtube.com/feeds/api/videos/'. $id;
+  static public function validId($id) {
+    $url = 'http://www.youtube.com/oembed?url=http%3A//youtube.com/watch%3Fv%3D'. $id;
     $response = drupal_http_request($url, array('method' => 'HEAD'));
     if ($response->code != 200) {
-      throw new MediaInternetValidationException(t('The YouTube video ID is invalid or the video was deleted.'));
+      throw new MediaInternetValidationException("The YouTube video ID is invalid or the video was deleted.");
     }
     return TRUE;
   }
@@ -37,7 +40,9 @@ class MediaInternetYouTubeHandler extends MediaInternetBaseHandler {
     );
     foreach ($patterns as $pattern) {
       preg_match($pattern, $embedCode, $matches);
-      if (isset($matches[1]) && self::valid_id($matches[1])) {
+      // @TODO: Parse is called often. Refactor so that valid ID is checked
+      // when a video is added, but not every time the embedCode is parsed.
+      if (isset($matches[1]) && self::validId($matches[1])) {
         return file_stream_wrapper_uri_normalize('youtube://v/' . $matches[1]);
       }
     }
@@ -82,7 +87,7 @@ class MediaInternetYouTubeHandler extends MediaInternetBaseHandler {
       $entry = simplexml_load_string($request->data);
     }
     else {
-      throw new Exception("Error Processing Request: '{$request->error}' (code:'{$response->code}'");
+      throw new Exception("Error Processing Request. (Error: {$response->code}, {$response->error})");
 
       //if request wasn't successful, create object for return to avoid errors
       $entry = new SimpleXMLElement();
@@ -107,7 +112,7 @@ class MediaInternetYouTubeHandler extends MediaInternetBaseHandler {
       return drupal_json_decode($response->data);
     }
     else {
-      throw new Exception("Error Processing Request. Error message: '{$response->error}' (code:'{$response->code}')");
+      throw new Exception("Error Processing Request. (Error: {$response->code}, {$response->error})");
       return;
     }
   }
