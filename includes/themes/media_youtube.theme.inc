@@ -59,16 +59,7 @@ function media_youtube_preprocess_media_youtube_video(&$variables) {
 
   // These queries default to 1. Option wording is reversed, so if the option
   // is true, set value to 0.
-  if ($variables['options']['controls']) {
-    $query['controls'] = 0;
-  }
-  // Reverse the reversed option so that it makes sense in the tpl.
-  if ($variables['options']['controls'] = 1) {
-    $variables['options']['controls'] = 0;
-  }
-  else {
-    $variables['options']['controls'] = 1;
-  }
+  // (None right now.)
 
   // Strings.
   if ($variables['options']['theme'] != 'dark') {

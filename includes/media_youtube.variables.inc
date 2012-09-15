@@ -111,7 +111,6 @@ function media_youtube_variable_default($name = NULL) {
       'autohide' => 2,
       'autoplay' => FALSE,
       'color' => 'red',
-      'controls' => TRUE,
       'enablejsapi' => FALSE,
       'loop' => FALSE,
       'modestbranding' => FALSE,

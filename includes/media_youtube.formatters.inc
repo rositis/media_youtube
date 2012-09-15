@@ -16,7 +16,7 @@ function media_youtube_file_formatter_info() {
     'settings callback' => 'media_youtube_file_formatter_video_settings',
   );
 
-  foreach (array('width', 'height', 'autohide', 'autoplay', 'color', 'controls', 'enablejsapi', 'loop', 'modestbranding', 'nocookie', 'origin', 'protocol', 'protocol_specify', 'rel', 'showinfo', 'theme') as $setting) {
+  foreach (array('width', 'height', 'autohide', 'autoplay', 'color', 'enablejsapi', 'loop', 'modestbranding', 'nocookie', 'origin', 'protocol', 'protocol_specify', 'rel', 'showinfo', 'theme') as $setting) {
     $formatters['media_youtube_video']['default settings'][$setting] = media_youtube_variable_get($setting);
   }
 
@@ -45,7 +45,7 @@ function media_youtube_file_formatter_video_view($file, $display, $langcode) {
       '#options' => array(),
     );
 
-    foreach (array('width', 'height', 'autohide', 'autoplay', 'color', 'controls', 'enablejsapi', 'loop', 'modestbranding', 'nocookie', 'origin', 'protocol', 'protocol_specify', 'rel', 'showinfo', 'theme') as $setting) {
+    foreach (array('width', 'height', 'autohide', 'autoplay', 'color', 'enablejsapi', 'loop', 'modestbranding', 'nocookie', 'origin', 'protocol', 'protocol_specify', 'rel', 'showinfo', 'theme') as $setting) {
       $element['#options'][$setting] = isset($file->override[$setting]) ? $file->override[$setting] : $display['settings'][$setting];
     }
     return $element;
@@ -117,11 +117,6 @@ function media_youtube_file_formatter_video_settings($form, &$form_state, $setti
 
   // Note: make sure the positive/negitive language lines up with option
   // processing in media_youtube.theme.inc.
-  $element['controls'] = array(
-    '#title' => t('Load player with controls hidden (chromeless player)'),
-    '#type' => 'checkbox',
-    '#default_value' => $settings['controls'],
-  );
   $element['showinfo'] = array(
     '#title' => t('Display video title and uploader'),
     '#type' => 'checkbox',
