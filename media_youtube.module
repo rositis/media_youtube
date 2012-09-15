@@ -214,14 +214,13 @@ function media_youtube_add($form, &$form_state = array()) {
   // Add the files to JS so that they are accessible inside the browser
   drupal_add_js(array('media' => array('files' => $files)), 'setting');
 
-    // Add media browser javascript and CSS.
+  // Add media browser javascript and CSS.
   drupal_add_js(drupal_get_path('module', 'media_youtube') . '/js/media-youtube.browser.js');
-  // We need to see if we can deprecate this
-  drupal_add_js(drupal_get_path('module', 'media') . '/js/plugins/media.library.js');
-  // We should abstract this into a standard css file so all implementers have
-  // it by default
-  drupal_add_css(drupal_get_path('module', 'media') . '/js/plugins/media.library.css');
-
+  
+  // @TODO: Remove deprecated library js and css. They're removed in Media,
+  // so let's comment out for now.
+  // drupal_add_js(drupal_get_path('module', 'media') . '/js/plugins/media.library.js');
+  // drupal_add_css(drupal_get_path('module', 'media') . '/js/plugins/media.library.css');
 
   $form['actions'] = array('#type' => 'actions');
   $form['actions']['submit'] = array(
