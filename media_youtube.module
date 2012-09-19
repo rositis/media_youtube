@@ -25,7 +25,6 @@ include_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'media_youtube') . '/
 function media_youtube_media_internet_providers() {
   $info['MediaInternetYouTubeHandler'] = array(
     'title' => t('YouTube'),
-    'image' => drupal_get_path('module', 'media_youtube') . '/images/stream-youtube.png',
   );
 
   return $info;
