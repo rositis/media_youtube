@@ -29,6 +29,7 @@ function media_youtube_file_formatter_info() {
     'view callback' => 'media_youtube_file_formatter_image_view',
     'settings callback' => 'media_youtube_file_formatter_image_settings',
   );
+
   return $formatters;
 }
 
@@ -45,7 +46,10 @@ function media_youtube_file_formatter_video_view($file, $display, $langcode) {
       '#options' => array(),
     );
 
-    foreach (array('width', 'height', 'autohide', 'autoplay', 'color', 'enablejsapi', 'loop', 'modestbranding', 'nocookie', 'origin', 'protocol', 'protocol_specify', 'rel', 'showinfo', 'theme') as $setting) {
+    // Fake a default for attributes so the ternary doesn't choke.
+    $display['settings']['attributes'] = array();
+
+    foreach (array('width', 'height', 'autohide', 'autoplay', 'color', 'enablejsapi', 'loop', 'modestbranding', 'nocookie', 'origin', 'protocol', 'protocol_specify', 'rel', 'showinfo', 'theme', 'attributes') as $setting) {
       $element['#options'][$setting] = isset($file->override[$setting]) ? $file->override[$setting] : $display['settings'][$setting];
     }
     return $element;
@@ -212,11 +216,13 @@ function media_youtube_file_formatter_image_view($file, $display, $langcode) {
     $wrapper = file_stream_wrapper_get_instance_by_uri($file->uri);
     $image_style = $display['settings']['image_style'];
     $valid_image_styles = image_style_options(FALSE);
+    // @TODO: If autosubmit is removed and we allow view modes that insert
+    // images in the WYSIWYG, add file->overrides handling.
     if (empty($image_style) || !isset($valid_image_styles[$image_style])) {
       $element = array(
         '#theme' => 'image',
         '#path' => $wrapper->getOriginalThumbnailPath(),
-        '#alt' => $file->filename,
+        '#alt' => isset($file->override['attributes']['alt']) ? $file->override['attributes']['alt'] : $file->filename,
       );
     }
     else {
@@ -224,9 +230,10 @@ function media_youtube_file_formatter_image_view($file, $display, $langcode) {
         '#theme' => 'image_style',
         '#style_name' => $image_style,
         '#path' => $wrapper->getLocalThumbnailPath(),
-        '#alt' => $file->filename,
+        '#alt' => isset($file->override['attributes']['alt']) ? $file->override['attributes']['alt'] : $file->filename,
       );
     }
+
     return $element;
   }
 }
@@ -292,7 +299,7 @@ function media_youtube_file_default_displays() {
 
   // Default settings for displaying a video preview image.
   // We enable preview images even for view modes that also play video
-  // for use inside a running WYSIWYG editor. We weight them so video 
+  // for use inside a running WYSIWYG editor. We weight them so video
   // formatters come first in the cascade to make sure the video formatter
   // is used whenever possible.
   $default_image_styles = array(

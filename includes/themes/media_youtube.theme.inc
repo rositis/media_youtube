@@ -92,6 +92,12 @@ function media_youtube_preprocess_media_youtube_video(&$variables) {
     $variables[$themevar] = $variables['options'][$themevar];
   }
 
+  // Do something useful with the overridden attributes from the file
+  // object. We ignore alt and style for now.
+  if (isset($variables['options']['attributes']['class'])) {
+    $variables['classes_array'] = array_merge($variables['classes_array'], $variables['options']['attributes']['class']);
+  }
+
   // Build the iframe URL with options query string.
   $variables['url'] = url($protocol . '//www.' . $url_base . '/embed/' . $variables['video_id'], array('query' => $query, 'external' => TRUE));
 }
