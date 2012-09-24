@@ -11,7 +11,7 @@
  *  $id - The file entity ID (fid).
  *  $url - The full url including query options for the Youtube iframe.
  *  $options - An array containing the Media Youtube formatter options.
- *  $api_id_attribute - An id attribute if the Javascript API is enabled; 
+ *  $api_id_attribute - An id attribute if the Javascript API is enabled;
  *  otherwise NULL.
  *  $width - The width value set in Media: Youtube file display options.
  *  $height - The height value set in Media: Youtube file display options.

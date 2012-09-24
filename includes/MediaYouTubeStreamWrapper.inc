@@ -1,7 +1,8 @@
 <?php
 
 /**
- *  @file
+ *  @file media_youtube/includes/MediaYouTubeStreamWrapper.inc
+ *
  *  Create a YouTube Stream Wrapper class for the Media/Resource module.
  */
 

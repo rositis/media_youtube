@@ -2,6 +2,7 @@
 
 /**
  * @file media_youtube/includes/media_youtube.variables.inc
+ *
  * Variable defaults for Media: YouTube.
  */
 
@@ -16,8 +17,15 @@ define('MEDIA_YOUTUBE_NAMESPACE', 'media_youtube__');
 
 /**
  * This is the rest point for the YouTube api.
+ *
+ * Avoid using the gdata api url when possible. Too many calls will result in
+ * throttling and 403 errors.
  */
 define('MEDIA_YOUTUBE_REST_API', 'https://gdata.youtube.com/feeds/api/videos');
+
+/**
+ * Variable system uses Ctools Exportables.
+ */
 
 /**
  * Wrapper for variable_get() using the Media: YouTube variable registry.
@@ -38,9 +46,8 @@ define('MEDIA_YOUTUBE_REST_API', 'https://gdata.youtube.com/feeds/api/videos');
  * @see media_youtube_variable_default()
  */
 function media_youtube_variable_get($name, $default = NULL) {
-  // Allow for an override of the default.
-  // Useful when a variable is required (like $path), but namespacing is still
-  // desired.
+  // Allow for an override of the default. Useful when a variable is required
+  // (like $path), but namespacing is still desired.
   if (!isset($default)) {
     $default = media_youtube_variable_default($name);
   }

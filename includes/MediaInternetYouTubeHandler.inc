@@ -1,7 +1,8 @@
 <?php
 
 /**
- * @file
+ * @file media_youtube/includes/MediaInterenetYouTubeHandler.inc
+ *
  * Contains MediaInternetYouTubeHandler.
  */
 

@@ -1,7 +1,9 @@
 <?php
 
 /**
- * @file
+ * @file media_youtube/includes/media_youtube.formatters.inc
+ *
+ * Formatters for Media: YouTube.
  */
 
 /**

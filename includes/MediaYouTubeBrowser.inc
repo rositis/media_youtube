@@ -1,7 +1,8 @@
 <?php
 
 /**
- * @file
+ * @file media_youtube/includes/MediaYouTubeBrowser.inc
+ *
  * Definition of MediaYouTubeBrowser.
  */
 

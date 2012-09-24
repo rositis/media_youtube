@@ -7,10 +7,11 @@
  * by YouTube, available at http://youtube.com/.
  *
  * @TODO:
- * Tie in YouTube API.
- * Allow editors to put in a youtube username to display on the browser.
- * Allow editors to log in w/ their credentials.
- * Allow editors to upload videos to YouTube.
+ * Get the YouTube tab working.
+ *  - Search by video name, user name, and channel.
+ *  - Default to user's channel videos.
+ * Review all code and remove cruft.
+ * Assess if M:YT 3.x could be formatters added on to the OEmbed module.
  */
 
 // A registry of variable_get defaults.
@@ -95,8 +96,17 @@ function media_youtube_ctools_plugin_api($owner, $api) {
 }
 
 /**
- * Implements hook_media_browser_plugin_info().
+ * YouTube Tab.
  */
+
+/**
+ * Implements hook_media_browser_plugin_info().
+ *
+ * Commented out for release versions, active in dev versions. To enable the
+ * YouTube media browser tab, uncomment this function.
+ */
+
+/*
 function media_youtube_media_browser_plugin_info() {
   $info['youtube'] = array(
     'title' => t('YouTube'),
@@ -105,6 +115,7 @@ function media_youtube_media_browser_plugin_info() {
 
   return $info;
 }
+*/
 
 /**
  * Provides a form for adding media items from YouTube search.
@@ -215,7 +226,7 @@ function media_youtube_add($form, &$form_state = array()) {
 
   // Add media browser javascript and CSS.
   drupal_add_js(drupal_get_path('module', 'media_youtube') . '/js/media-youtube.browser.js');
-  
+
   // @TODO: Remove deprecated library js and css. They're removed in Media,
   // so let's comment out for now.
   // drupal_add_js(drupal_get_path('module', 'media') . '/js/plugins/media.library.js');
@@ -286,6 +297,9 @@ function media_youtube_add_validate($form, &$form_state) {
   // We need to fix the media_parse_to_file routine to allow for a validation.
 }
 
+/**
+ * @TODO: Document this function.
+ */
 function media_youtube_add_submit($form, &$form_state) {
   $uri = $form_state['values']['sumitted-video'];
   try {
@@ -320,6 +334,9 @@ function media_youtube_add_submit($form, &$form_state) {
   }
 }
 
+/**
+ * @TODO: Document this function.
+ */
 function media_youtube_video_search($options = array()) {
   $options['v'] = 2;
   return media_retrieve_xml(url(MEDIA_YOUTUBE_REST_API, array('query' => $options)));
@@ -334,6 +351,9 @@ function media_youtube_video_search($options = array()) {
  *   (Defaults to FALSE) If TRUE, then reset the value from the cache.
  * @return boolean
  *   Returns TRUE if the video is valid.
+ *
+ * @TODO: How does this compare to MediaInternetYouTubeHandler's validId
+ * method, and can we refactor the code to rely on only one of them?
  */
 function media_youtube_valid_id($id, $refresh = FALSE) {
   $ids = &drupal_static(__FUNCTION__, array());
