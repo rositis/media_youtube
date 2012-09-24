@@ -96,7 +96,7 @@ function media_youtube_ctools_plugin_api($owner, $api) {
 }
 
 /**
- * YouTube Tab.
+ * YouTube search tab for the Media browser.
  */
 
 /**
@@ -105,8 +105,6 @@ function media_youtube_ctools_plugin_api($owner, $api) {
  * Commented out for release versions, active in dev versions. To enable the
  * YouTube media browser tab, uncomment this function.
  */
-
-/*
 function media_youtube_media_browser_plugin_info() {
   $info['youtube'] = array(
     'title' => t('YouTube'),
@@ -115,7 +113,6 @@ function media_youtube_media_browser_plugin_info() {
 
   return $info;
 }
-*/
 
 /**
  * Provides a form for adding media items from YouTube search.
