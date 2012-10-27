@@ -11,6 +11,9 @@
  */
 function media_youtube_preprocess_media_youtube_video(&$variables) {
 
+  // Make the file object available.
+  $file_object = file_load($variables['id']);
+
   // Build the URI.
   $wrapper = file_stream_wrapper_get_instance_by_uri($variables['uri']);
   $parts = $wrapper->get_parameters();
@@ -88,8 +91,8 @@ function media_youtube_preprocess_media_youtube_video(&$variables) {
   }
 
   // Add some options as their own template variables.
-  foreach (array('width', 'height') as $themevar) {
-    $variables[$themevar] = $variables['options'][$themevar];
+  foreach (array('width', 'height') as $theme_var) {
+    $variables[$theme_var] = $variables['options'][$theme_var];
   }
 
   // Do something useful with the overridden attributes from the file
@@ -97,6 +100,12 @@ function media_youtube_preprocess_media_youtube_video(&$variables) {
   if (isset($variables['options']['attributes']['class'])) {
     $variables['classes_array'] = array_merge($variables['classes_array'], $variables['options']['attributes']['class']);
   }
+
+  // Add template variables for accessibility.
+  $variables['title'] = $file_object->filename;
+  // @TODO: Find an easy/ not too expensive way to get the YouTube description
+  // to use for the alternative content.
+  $variables['alternative_content'] = t("Video of " . $variables['title']);
 
   // Build the iframe URL with options query string.
   $variables['url'] = url($protocol . '//www.' . $url_base . '/embed/' . $variables['video_id'], array('query' => $query, 'external' => TRUE));
