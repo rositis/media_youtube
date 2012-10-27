@@ -98,7 +98,13 @@ function media_youtube_preprocess_media_youtube_video(&$variables) {
   // Do something useful with the overridden attributes from the file
   // object. We ignore alt and style for now.
   if (isset($variables['options']['attributes']['class'])) {
-    $variables['classes_array'] = array_merge($variables['classes_array'], $variables['options']['attributes']['class']);
+    if (is_array($variables['options']['attributes']['class'])) {
+      $variables['classes_array'] = array_merge($variables['classes_array'], $variables['options']['attributes']['class']);
+    }
+    else {
+      // Provide nominal support for Media 1.x.
+      $variables['classes_array'][] = $variables['options']['attributes']['class'];
+    }
   }
 
   // Add template variables for accessibility.
