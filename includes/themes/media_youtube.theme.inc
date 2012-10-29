@@ -11,13 +11,13 @@
  */
 function media_youtube_preprocess_media_youtube_video(&$variables) {
 
-  // Make the file object available.
-  $file_object = file_load($variables['id']);
-
   // Build the URI.
   $wrapper = file_stream_wrapper_get_instance_by_uri($variables['uri']);
   $parts = $wrapper->get_parameters();
   $variables['video_id'] = check_plain($parts['v']);
+
+  // Make the file object available.
+  $file_object = file_uri_to_object($variables['uri']);
 
   // Parse options and build the query string. Only add the option to the query
   // array if the option value is not default. Be careful, depending on the
@@ -108,10 +108,10 @@ function media_youtube_preprocess_media_youtube_video(&$variables) {
   }
 
   // Add template variables for accessibility.
-  $variables['title'] = $file_object->filename;
+  $variables['title'] = check_plain($file_object->filename);
   // @TODO: Find an easy/ not too expensive way to get the YouTube description
   // to use for the alternative content.
-  $variables['alternative_content'] = t("Video of " . $variables['title']);
+  $variables['alternative_content'] = t('Video of @title', array('@title' => $variables['title']));
 
   // Build the iframe URL with options query string.
   $variables['url'] = url($protocol . '//www.' . $url_base . '/embed/' . $variables['video_id'], array('query' => $query, 'external' => TRUE));
