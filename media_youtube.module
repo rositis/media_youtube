@@ -90,16 +90,6 @@ function media_youtube_file_default_types_alter(&$types) {
 }
 
 /**
- * Implements hook_media_format_form_prepare_alter().
- */
-function media_youtube_media_format_form_prepare_alter(&$form, &$form_state, $media) {
-  if ($form['#media']->filemime == 'video/youtube') {
-    $settings = array('autosubmit' => TRUE);
-    drupal_add_js(array('media_format_form' => $settings), 'setting');
-  }
-}
-
-/**
  * Implements hook_ctools_plugin_api().
  */
 function media_youtube_ctools_plugin_api($owner, $api) {
