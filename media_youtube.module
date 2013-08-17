@@ -14,8 +14,13 @@
  * Assess if M:YT 3.x could be formatters added on to the OEmbed module.
  */
 
-// A registry of variable_get defaults.
-include_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'media_youtube') . '/includes/media_youtube.variables.inc';
+/**
+ * This is the rest point for the YouTube api.
+ *
+ * Avoid using the gdata api url when possible. Too many calls will result in
+ * throttling and 403 errors.
+ */
+define('MEDIA_YOUTUBE_REST_API', 'https://gdata.youtube.com/feeds/api/videos');
 
 // Hooks and callbacks for integrating with File Entity module for display.
 include_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'media_youtube') . '/includes/media_youtube.formatters.inc';

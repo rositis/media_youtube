@@ -18,9 +18,23 @@ function media_youtube_file_formatter_info() {
     'settings callback' => 'media_youtube_file_formatter_video_settings',
   );
 
-  foreach (array('width', 'height', 'autohide', 'autoplay', 'color', 'enablejsapi', 'loop', 'modestbranding', 'nocookie', 'origin', 'protocol', 'protocol_specify', 'rel', 'showinfo', 'theme') as $setting) {
-    $formatters['media_youtube_video']['default settings'][$setting] = media_youtube_variable_get($setting);
-  }
+  $formatters['media_youtube_video']['default settings'] = array(
+    'width' => 640,
+    'height' => 390,
+    'autohide' => 2,
+    'autoplay' => FALSE,
+    'color' => 'red',
+    'enablejsapi' => FALSE,
+    'loop' => FALSE,
+    'modestbranding' => FALSE,
+    'nocookie' => FALSE,
+    'origin' => '',
+    'protocol' => 'https:',
+    'protocol_specify' => FALSE,
+    'rel' => TRUE,
+    'showinfo' => TRUE,
+    'theme' => 'dark',
+  );
 
   $formatters['media_youtube_image'] = array(
     'label' => t('YouTube Preview Image'),
