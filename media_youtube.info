@@ -5,5 +5,4 @@ core = 7.x
 files[] = includes/MediaInternetYouTubeHandler.inc
 files[] = includes/MediaYouTubeStreamWrapper.inc
 files[] = includes/MediaYouTubeBrowser.inc
-dependencies[] = media
 dependencies[] = media_internet
