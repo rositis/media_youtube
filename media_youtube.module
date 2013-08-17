@@ -23,7 +23,7 @@
 define('MEDIA_YOUTUBE_REST_API', 'https://gdata.youtube.com/feeds/api/videos');
 
 // Hooks and callbacks for integrating with File Entity module for display.
-include_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'media_youtube') . '/includes/media_youtube.formatters.inc';
+require_once dirname(__FILE__) . '/includes/media_youtube.formatters.inc';
 
 /**
  * Implements hook_media_internet_providers().
