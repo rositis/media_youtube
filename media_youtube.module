@@ -203,7 +203,7 @@ function media_youtube_add($form, &$form_state = array()) {
     '#markup' => $prev . ' ' . $next,
   );
 
-  $form['sumitted-video'] = array(
+  $form['submitted-video'] = array(
     '#type' => 'hidden',
     '#default_value' => FALSE,
   );
@@ -239,7 +239,7 @@ function media_youtube_add_validate($form, &$form_state) {
   if ($form_state['values']['op'] == t('Apply')) {
     return;
   }
-  $uri = $form_state['values']['sumitted-video'];
+  $uri = $form_state['values']['submitted-video'];
   try {
     $file = file_uri_to_object($uri, TRUE);
   }
@@ -288,7 +288,7 @@ function media_youtube_add_validate($form, &$form_state) {
  * @TODO: Document this function.
  */
 function media_youtube_add_submit($form, &$form_state) {
-  $uri = $form_state['values']['sumitted-video'];
+  $uri = $form_state['values']['submitted-video'];
   try {
     // Save the remote file
     $file = file_uri_to_object($uri, TRUE);
