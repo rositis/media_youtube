@@ -6,13 +6,6 @@
  */
 
 /**
- * Implement hook_install().
- */
-function media_youtube_install() {
-  return array();
-}
-
-/**
  * Implement hook_uninstall().
  */
 function media_youtube_uninstall() {
