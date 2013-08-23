@@ -68,8 +68,8 @@ function media_youtube_theme($existing, $type, $theme, $path) {
  * Implements hook_media_parse().
  *
  * @todo This hook should be deprecated. Refactor Media module to not call it
- *   any more, since media_internet should be able to automatically route to the
- *   appropriate handler.
+ * any more, since media_internet should be able to automatically route to the
+ * appropriate handler.
  */
 function media_youtube_media_parse($embed_code) {
   $handler = new MediaInternetYouTubeHandler($embed_code);
@@ -79,7 +79,7 @@ function media_youtube_media_parse($embed_code) {
 /**
  * Implements hook_file_mimetype_mapping_alter().
  *
- * Regster the video/youtube mimetype.
+ * Register the video/youtube mimetype.
  */
 function media_youtube_file_mimetype_mapping_alter(&$mapping) {
   $mapping['mimetypes'][] = 'video/youtube';
