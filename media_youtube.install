@@ -153,6 +153,6 @@ function media_youtube_update_7202() {
  */
 function media_youtube_update_7203() {
   foreach (array('width', 'height', 'autohide', 'autoplay', 'color', 'enablejsapi', 'loop', 'modestbranding', 'nocookie', 'origin', 'protocol', 'protocol_specify', 'rel', 'showinfo', 'theme') as $setting) {
-    variable_del($setting);
+    variable_del("media_youtube__{$setting}");
   }
 }
