@@ -277,7 +277,7 @@ function media_youtube_file_default_displays_alter(&$file_displays) {
   $file_display = new stdClass();
   $file_display->api_version = 1;
   $file_display->name = 'video__default__media_youtube_video';
-  $file_display->weight = -1;
+  $file_display->weight = 0;
   $file_display->status = TRUE;
   $file_display->settings = array(
     'width' => '640',
@@ -301,7 +301,7 @@ function media_youtube_file_default_displays_alter(&$file_displays) {
   $file_display = new stdClass();
   $file_display->api_version = 1;
   $file_display->name = 'video__preview__media_youtube_image';
-  $file_display->weight = -49;
+  $file_display->weight = 0;
   $file_display->status = TRUE;
   $file_display->settings = array(
     'image_style' => 'media_thumbnail',
@@ -311,7 +311,7 @@ function media_youtube_file_default_displays_alter(&$file_displays) {
   $file_display = new stdClass();
   $file_display->api_version = 1;
   $file_display->name = 'video__teaser__media_youtube_video';
-  $file_display->weight = -50;
+  $file_display->weight = 0;
   $file_display->status = TRUE;
   $file_display->settings = array(
     'width' => '560',
