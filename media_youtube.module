@@ -328,7 +328,37 @@ function media_youtube_add_submit($form, &$form_state) {
  */
 function media_youtube_video_search($options = array()) {
   $options['v'] = 2;
-  return media_retrieve_xml(url(MEDIA_YOUTUBE_REST_API, array('query' => $options)));
+
+  $request = drupal_http_request(url(MEDIA_YOUTUBE_REST_API, array('query' => $options)));
+  if (!isset($request->error)) {
+    $entry = simplexml_load_string($request->data);
+  }
+  else {
+    throw new Exception("Error Processing Request. (Error: {$request->code}, {$request->error})");
+
+    //if request wasn't successful, create object for return to avoid errors
+    $entry = new SimpleXMLElement();
+  }
+
+  return media_youtube_unserialize_xml($entry);
+}
+
+/**
+ * Recursively converts a SimpleXMLElement object into an array.
+ *
+ * @param object $xml
+ *   The original XML object.
+ */
+function media_youtube_unserialize_xml($xml) {
+  if ($xml instanceof SimpleXMLElement) {
+    $xml = (array) $xml;
+  }
+  if (is_array($xml)) {
+    foreach ($xml as $key => $item) {
+      $xml[$key] = media_youtube_unserialize_xml($item);
+    }
+  }
+  return $xml;
 }
 
 /**
