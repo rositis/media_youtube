@@ -16,6 +16,7 @@ function media_youtube_file_formatter_info() {
     'default settings' => array(),
     'view callback' => 'media_youtube_file_formatter_video_view',
     'settings callback' => 'media_youtube_file_formatter_video_settings',
+    'mime types' => array('video/youtube'),
   );
 
   $formatters['media_youtube_video']['default settings'] = array(
@@ -44,6 +45,7 @@ function media_youtube_file_formatter_info() {
     ),
     'view callback' => 'media_youtube_file_formatter_image_view',
     'settings callback' => 'media_youtube_file_formatter_image_settings',
+    'mime types' => array('video/youtube'),
   );
 
   return $formatters;
