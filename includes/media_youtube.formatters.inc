@@ -35,6 +35,7 @@ function media_youtube_file_formatter_info() {
     'rel' => TRUE,
     'showinfo' => TRUE,
     'theme' => 'dark',
+    'captions' => FALSE,
   );
 
   $formatters['media_youtube_image'] = array(
@@ -67,7 +68,7 @@ function media_youtube_file_formatter_video_view($file, $display, $langcode) {
     // Fake a default for attributes so the ternary doesn't choke.
     $display['settings']['attributes'] = array();
 
-    foreach (array('width', 'height', 'autohide', 'autoplay', 'color', 'enablejsapi', 'loop', 'modestbranding', 'nocookie', 'origin', 'protocol', 'protocol_specify', 'rel', 'showinfo', 'theme', 'attributes') as $setting) {
+    foreach (array('width', 'height', 'autohide', 'autoplay', 'color', 'enablejsapi', 'loop', 'modestbranding', 'nocookie', 'origin', 'protocol', 'protocol_specify', 'rel', 'showinfo', 'theme', 'attributes', 'captions') as $setting) {
       $element['#options'][$setting] = isset($file->override[$setting]) ? $file->override[$setting] : $display['settings'][$setting];
     }
     return $element;
@@ -123,6 +124,16 @@ function media_youtube_file_formatter_video_settings($form, &$form_state, $setti
       '1' => t('Hide progress bar and player controls'),
     ),
     '#default_value' => $settings['autohide'],
+  );
+  $element['captions'] = array(
+    '#title' => t('Captions displaying options'),
+    '#type' => 'radios',
+    '#options' => array(
+      '0' => t('Turns captions off by default'),
+      '1' => t('Turns captions on by default'),
+      '2' => t('Turns captions on and set the caption language for the video by default'),
+    ),
+    '#default_value' => $settings['captions'],
   );
 
   // Single Options.
