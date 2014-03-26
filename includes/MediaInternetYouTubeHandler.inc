@@ -81,23 +81,25 @@ class MediaInternetYouTubeHandler extends MediaInternetBaseHandler {
   }
 
   /**
-   * Check if a YouTube video id is valid.
+   * Check if a YouTube video ID is valid.
    *
-   * Check against the oembed stream instead of the gdata api site to
-   * avoid "yt:quota too_many_recent_calls" errors.
-   *
-   * @return
-   *   Boolean.
+   * @return boolean
+   *   TRUE if the video ID is valid, or throws a
+   *   MediaInternetValidationException otherwise.
    */
   static public function validId($id) {
-    $url = 'http://www.youtube.com/oembed?url=http%3A//youtube.com/watch%3Fv%3D'. $id;
-    $response = drupal_http_request($url, array('method' => 'HEAD'));
+    $uri = file_stream_wrapper_uri_normalize('youtube://v/' . check_plain($id));
+    $external_url = file_create_url($uri);
+    $oembed_url = url('http://www.youtube.com/oembed', array('query' => array('url' => $external_url, 'format' => 'json')));
+    $response = drupal_http_request($oembed_url, array('method' => 'HEAD'));
+
     if ($response->code == 401) {
-      throw new MediaInternetValidationException("Embedding has been disabled for this video.");
+      throw new MediaInternetValidationException('Embedding has been disabled for this YouTube video.');
     }
     elseif ($response->code != 200) {
-      throw new MediaInternetValidationException("The YouTube video ID is invalid or the video was deleted.");
+      throw new MediaInternetValidationException('The YouTube video ID is invalid or the video was deleted.');
     }
+
     return TRUE;
   }
 }
