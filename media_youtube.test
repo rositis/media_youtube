@@ -8,7 +8,7 @@
 /**
  * Provides methods specifically for testing Media YouTube's YouTube video handling.
  */
-class MediaYouTubeTestHelper extends DrupalWebTestCase {
+class MediaYouTubeTestHelper extends MediaInternetTestHelper {
   function setUp() {
     // Since this is a base class for many test cases, support the same
     // flexibility that DrupalWebTestCase::setUp() has for the modules to be
@@ -19,13 +19,6 @@ class MediaYouTubeTestHelper extends DrupalWebTestCase {
     }
     $modules[] = 'media_youtube';
     parent::setUp($modules);
-  }
-
-  /**
-   * Retrieves the fid of the last inserted file.
-   */
-  function getLastFileId() {
-    return (int) db_query('SELECT MAX(fid) FROM {file_managed}')->fetchField();
   }
 }
 
