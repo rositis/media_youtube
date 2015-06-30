@@ -5,7 +5,7 @@ core = 7.x
 
 dependencies[] = media_internet
 
-test_dependencies[] = media (2.x)
+test_dependencies[] = media_internet (2.x)
 
 files[] = media_youtube.test
 files[] = includes/MediaYouTubeStreamWrapper.inc
