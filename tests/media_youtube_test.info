@@ -1,0 +1,9 @@
+name = Media YouTube Test
+description = Provides hooks for testing Media YouTube module functionality.
+package = Media
+core = 7.x
+dependencies[] = media_youtube
+hidden = TRUE
+
+files[] = includes/MediaYouTubeTestStreamWrapper.inc
+files[] = includes/MediaYouTubeTestHandler.inc
