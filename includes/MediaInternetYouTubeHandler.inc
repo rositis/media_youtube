@@ -21,7 +21,7 @@ class MediaInternetYouTubeHandler extends MediaInternetBaseHandler {
     foreach ($list_patterns as $pattern) {
       preg_match($pattern, $embedCode, $matches);
 
-      if (isset($matches[1]) && self::validId($matches[1], 'l')) {
+      if (isset($matches[1]) && $this->validId($matches[1], 'l')) {
         return file_stream_wrapper_uri_normalize('youtube://l/' . $matches[1]);
       }
     }
@@ -107,7 +107,7 @@ class MediaInternetYouTubeHandler extends MediaInternetBaseHandler {
    *   TRUE if the video ID is valid, or throws a
    *   MediaInternetValidationException otherwise.
    */
-  static public function validId($id, $type = 'v') {
+  public function validId($id, $type = 'v') {
     $uri = file_stream_wrapper_uri_normalize('youtube://' . $type . '/' . check_plain($id));
     $external_url = file_create_url($uri);
     $oembed_url = url('http://www.youtube.com/oembed', array('query' => array('url' => $external_url, 'format' => 'json')));
