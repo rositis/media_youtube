@@ -24,8 +24,14 @@ function media_youtube_preprocess_media_youtube_video(&$variables) {
     $embed_path = '/embed/videoseries';
   }
 
-  // Make the file object available.
-  $file_object = file_uri_to_object($variables['uri']);
+  // Checked existing function.
+  if(function_exists('file_uri_to_object')) {
+    // Make the file object available.
+    $file_object = file_uri_to_object($variables['uri']);
+  }
+  else {
+    $file_object = media_youtube_file_uri_to_object($variables['uri']);
+  }
 
   // Parse options and build the query string. Only add the option to the query
   // array if the option value is not default. Be careful, depending on the
@@ -138,4 +144,26 @@ function media_youtube_preprocess_media_youtube_video(&$variables) {
   }
   // Build the iframe URL with options query string.
   $variables['url'] = url($protocol . '//www.' . $url_base . $embed_path, array('query' => $query, 'external' => TRUE));
+}
+
+/**
+ * Helping function.
+ */
+function media_youtube_file_uri_to_object($uri) {
+  $uri = file_stream_wrapper_uri_normalize($uri);
+  $files = entity_load('file', FALSE, array('uri' => $uri));
+  $file = !empty($files) ? reset($files) : FALSE;
+  if (!$file) {
+    global $user;
+    $file = new stdClass();
+    $file->uid = $user->uid;
+    $file->filename = basename($uri);
+    $file->uri = $uri;
+    $file->filemime = file_get_mimetype($uri);
+    // This is gagged because some uris will not support it.
+    $file->filesize = @filesize($uri);
+    $file->timestamp = REQUEST_TIME;
+    $file->status = FILE_STATUS_PERMANENT;
+  }
+  return $file;
 }
