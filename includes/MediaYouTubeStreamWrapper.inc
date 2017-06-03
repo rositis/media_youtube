@@ -18,17 +18,25 @@ class MediaYouTubeStreamWrapper extends MediaReadOnlyStreamWrapper {
 
   function getOriginalThumbnailPath() {
     $parts = $this->get_parameters();
-    $uri = file_stream_wrapper_uri_normalize('youtube://v/' . check_plain($parts['v']));
-    $external_url = file_create_url($uri);
-    $oembed_url = url('http://www.youtube.com/oembed', array('query' => array('url' => $external_url, 'format' => 'json')));
-    $response = drupal_http_request($oembed_url);
-
+    $thumbnail_url = 'http://img.youtube.com/vi/' . check_plain($parts['v']) . "/maxresdefault.jpg";
+    $response = drupal_http_request($thumbnail_url);
     if (!isset($response->error)) {
-      $data = drupal_json_decode($response->data);
-      return $data['thumbnail_url'];
+      return $thumbnail_url;
     }
     else {
-      throw new Exception(t('Error Processing Request. (Error: %code, %error)', array('%code' => $response->code, '%error' => $response->error)));
+      $uri = file_stream_wrapper_uri_normalize('youtube://v/' . check_plain($parts['v']));
+      $external_url = file_create_url($uri);
+      $oembed_url = url('http://www.youtube.com/oembed', array('query' => array('url' => $external_url, 'format' => 'json')));
+      $response = drupal_http_request($oembed_url);
+
+      if (!isset($response->error)) {
+        $data = drupal_json_decode($response->data);
+        return $data['thumbnail_url'];
+      }
+      else {
+        throw new Exception("Error Processing Request. (Error: {$response->code}, {$response->error})");
+        return;
+      }
     }
   }
 
