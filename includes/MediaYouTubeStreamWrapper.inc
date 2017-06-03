@@ -23,6 +23,15 @@ class MediaYouTubeStreamWrapper extends MediaReadOnlyStreamWrapper {
     if (!isset($response->error)) {
       return $thumbnail_url;
     }
+    elseif ($response->code == 401) {
+      throw new MediaInternetValidationException("Embedding has been disabled for this video.");
+    }
+    elseif ($response->code == 404) {
+      return "http://s.ytimg.com/yts/img/image-hh-404-vflvCykRp.png";
+    }
+    elseif ($response->code != 200) {
+      throw new MediaInternetValidationException("The YouTube video ID is invalid or the video was deleted.");
+    }
     else {
       $uri = file_stream_wrapper_uri_normalize('youtube://v/' . check_plain($parts['v']));
       $external_url = file_create_url($uri);
@@ -42,8 +51,8 @@ class MediaYouTubeStreamWrapper extends MediaReadOnlyStreamWrapper {
 
   function getLocalThumbnailPath() {
     $parts = $this->get_parameters();
-    $local_path = file_default_scheme() . '://media-youtube/' . check_plain($parts['v']) . '.jpg';
-
+    $id = array_pop($parts);
+    $local_path = file_default_scheme() . '://media-youtube/' . check_plain($id) . '.jpg';
     if (!file_exists($local_path)) {
       // getOriginalThumbnailPath throws an exception if there are any errors
       // when retrieving the original thumbnail from YouTube.
@@ -70,4 +79,31 @@ class MediaYouTubeStreamWrapper extends MediaReadOnlyStreamWrapper {
 
     return $local_path;
   }
+
+  /**
+   * Updates $base_url depending on whether the embed is a video or playlist.
+   */
+  function setBaseUrl($parameters) {
+    if (isset($parameters['l'])) {
+      if (!isset($parameters['v'])) {
+        $this->base_url = 'http://youtube.com/playlist';
+      }
+      $parameters['list'] = $parameters['l'];
+      unset($parameters['l']);
+    }
+    return $parameters;
+  }
+
+  /**
+   * Returns a url in the format "http://www.youtube.com/watch?v=qsPQN4MiTeE".
+   *
+   * Overrides interpolateUrl() defined in MediaReadOnlyStreamWrapper.
+   */
+  function interpolateUrl() {
+    if ($parameters = $this->get_parameters()) {
+      $parameters = $this->setBaseUrl($parameters);
+      return $this->base_url . '?' . http_build_query($parameters);
+    }
+  }
+
 }
