@@ -104,7 +104,7 @@ function media_youtube_preprocess_media_youtube_video(&$variables) {
     $protocol = $variables['options']['protocol'];
   }
   else {
-    $protocol = '';
+    $protocol = 'https:';
   }
 
   // Non-query options.
