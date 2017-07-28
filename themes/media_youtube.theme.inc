@@ -12,16 +12,24 @@
 function media_youtube_preprocess_media_youtube_video(&$variables) {
   // Build the URI.
   $wrapper = file_stream_wrapper_get_instance_by_uri($variables['uri']);
-  $parts = $wrapper->get_parameters();
-  if (isset($parts['v'])) {
-    $variables['embed_type'] = 'video';
-    $variables['video_id'] = check_plain($parts['v']);
-    $embed_path = '/embed/' . $variables['video_id'];
+  if ($wrapper instanceof MediaReadOnlyStreamWrapper) {
+    $parts = $wrapper->get_parameters();
+    if (isset($parts['v'])) {
+      $variables['embed_type'] = 'video';
+      $variables['video_id'] = check_plain($parts['v']);
+      $embed_path = '/embed/' . $variables['video_id'];
+    }
+    elseif (isset($parts['l'])) {
+      $variables['embed_type'] = 'playlist';
+      $variables['video_id'] = check_plain($parts['l']);
+      $embed_path = '/embed/videoseries';
+    }
   }
-  elseif (isset($parts['l'])) {
-    $variables['embed_type'] = 'playlist';
-    $variables['video_id'] = check_plain($parts['l']);
-    $embed_path = '/embed/videoseries';
+  else {
+    // This happens when stream wrappers are not yet initialized. This is
+    // normally only encountered when creating content during profile install
+    // using drush make. At that point, video_id is irrelevant anyway.
+    $variables['video_id'] = '';
   }
 
   // Checked existing function.
