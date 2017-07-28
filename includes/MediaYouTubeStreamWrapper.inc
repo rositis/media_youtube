@@ -69,7 +69,7 @@ class MediaYouTubeStreamWrapper extends MediaReadOnlyStreamWrapper {
           file_unmanaged_save_data($response->data, $local_path, TRUE);
         }
         else {
-          @copy($this->getOriginalThumbnailPath(), $local_path);
+          system_retrieve_file($this->getOriginalThumbnailPath(), $local_path, FALSE, FILE_EXISTS_REPLACE);
         }
       }
       catch (Exception $e) {
