@@ -43,6 +43,7 @@ function media_youtube_preprocess_media_youtube_video(&$variables) {
   $query['wmode'] = 'opaque';
 
   // These queries default to 0. If the option is true, set value to 1.
+  $query['controls'] = $variables['options']['controls'];
   foreach (array('autoplay', 'enablejsapi', 'loop', 'modestbranding') as $option) {
     if ($variables['options'][$option]) {
       $query[$option] = 1;
