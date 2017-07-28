@@ -42,8 +42,15 @@ function media_youtube_preprocess_media_youtube_video(&$variables) {
   // Make css z-index work with flash object. Must be the first parameter.
   $query['wmode'] = 'opaque';
 
+  //YouTube video controls, on or off.
+  if (isset($variables['options']['controls'])) {
+    //on or off (TRUE/FALSE) depending on what is stored in $variables['options']['controls'].
+    $query['controls'] = $variables['options']['controls'];
+  } else {
+    //on
+    $query['controls'] = TRUE;
+  }
   // These queries default to 0. If the option is true, set value to 1.
-  $query['controls'] = $variables['options']['controls'];
   foreach (array('autoplay', 'enablejsapi', 'loop', 'modestbranding') as $option) {
     if ($variables['options'][$option]) {
       $query[$option] = 1;
