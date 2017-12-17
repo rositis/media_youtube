@@ -60,7 +60,7 @@ function media_youtube_preprocess_media_youtube_video(&$variables) {
   }
   // These queries default to 0. If the option is true, set value to 1.
   foreach (array('autoplay', 'enablejsapi', 'loop', 'modestbranding') as $option) {
-    if ($variables['options'][$option]) {
+    if (isset($variables['options'][$option]) && $variables['options'][$option]) {
       $query[$option] = 1;
     }
   }
