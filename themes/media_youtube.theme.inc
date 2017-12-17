@@ -35,7 +35,7 @@ function media_youtube_preprocess_media_youtube_video(&$variables) {
   // Checked existing function.
   if(function_exists('file_uri_to_object')) {
     // Make the file object available.
-    $file_object = file_uri_to_object($variables['uri']);
+    $file_object = file_uri_to_object($variables['uri'], TRUE);
   }
   else {
     $file_object = media_youtube_file_uri_to_object($variables['uri']);
