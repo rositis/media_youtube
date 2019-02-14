@@ -99,7 +99,7 @@ class MediaYouTubeStreamWrapper extends MediaReadOnlyStreamWrapper {
   }
 
   /**
-   * Returns a url in the format "http://www.youtube.com/watch?v=qsPQN4MiTeE".
+   * Returns a url in the format "https://www.youtube.com/watch?v=qsPQN4MiTeE".
    *
    * Overrides interpolateUrl() defined in MediaReadOnlyStreamWrapper.
    */
